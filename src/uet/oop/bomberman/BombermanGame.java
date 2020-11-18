@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.getMap.GetMap;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.BufferedReader;
@@ -18,8 +19,16 @@ import java.util.List;
 
 public class BombermanGame extends Application {
     
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 15;
+    public static final int WIDTH = 31;
+    public static final int HEIGHT = 13;
+    public static String[] map = GetMap.getMap("res/levels/Level1.txt");
+
+    //di chuyen bomber
+
+    public static boolean gotoEast;
+    public static boolean gotoWest;
+    public static boolean gotoNorth;
+    public static boolean gotoSouth;
     
     private GraphicsContext gc;
     private Canvas canvas;
@@ -47,6 +56,34 @@ public class BombermanGame extends Application {
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
+
+        //input huong di chuyen bomber
+
+        scene.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case UP: gotoNorth = true;
+                break;
+                case DOWN: gotoSouth = true;
+                break;
+                case LEFT: gotoWest = true;
+                break;
+                case RIGHT: gotoEast = true;
+                break;
+            }
+        });
+
+        scene.setOnKeyReleased(event -> {
+            switch (event.getCode()) {
+                case UP: gotoNorth = false;
+                    break;
+                case DOWN: gotoSouth = false;
+                    break;
+                case LEFT: gotoWest = false;
+                    break;
+                case RIGHT: gotoEast = false;
+                    break;
+            }
+        });
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
