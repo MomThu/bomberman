@@ -8,7 +8,29 @@ import javafx.scene.paint.Color;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.util.List;
+
 public class Bomber extends Entity {
+
+    private boolean isDead;
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
+    private int time;
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
 
     private static int speedX = 1;
 
@@ -34,6 +56,14 @@ public class Bomber extends Entity {
 
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
+    }
+
+    public int getX() {
+        return (x + 12) / 32;
+    }
+
+    public int getY() {
+        return (y + 16) / 32;
     }
 
     public void gotoEast() {
@@ -69,7 +99,7 @@ public class Bomber extends Entity {
         }
         if (checkImage) {
             img = Sprite.player_right.getFxImage();
-        } else if (east % 4 <= 3) {
+        } else if (east % 8 <= 3) {
             img = Sprite.player_right_1.getFxImage();
         } else {
             img = Sprite.player_right_2.getFxImage();
@@ -109,7 +139,7 @@ public class Bomber extends Entity {
         }
         if (checkImage) {
             img = Sprite.player_left.getFxImage();
-        } else if ( west % 4 <= 3) {
+        } else if ( west % 8 <= 3) {
             img = Sprite.player_left_1.getFxImage();
         } else {
             img = Sprite.player_left_2.getFxImage();
@@ -148,7 +178,7 @@ public class Bomber extends Entity {
         }
         if (checkImage) {
             img = Sprite.player_up.getFxImage();
-        } else if (north % 4 <= 3) {
+        } else if (north % 8 <= 3) {
             img = Sprite.player_up_1.getFxImage();
         } else {
             img = Sprite.player_up_2.getFxImage();
@@ -187,15 +217,66 @@ public class Bomber extends Entity {
         }
         if (checkImage) {
             img = Sprite.player_down.getFxImage();
-        } else if (south % 4 <= 3) {
+        } else if (south % 8 <= 3) {
             img = Sprite.player_down_1.getFxImage();
         } else {
             img = Sprite.player_down_2.getFxImage();
         }
     }
 
+    public void collideToDead(List<Flame> flames, List<Balloom> ballooms, List<Oneal> oneals) {
+        int X1 = (x + 3) / 32;
+        int Y1 = (y + 3) / 32;
+        int X2 = (x + 24) / 32;
+        int Y2 = (y + 32) / 32;
+        for (Flame flame: flames) {
+            if ((flame.getX() == X1 && flame.getY() == Y1)
+                    || (flame.getX() == X1 && flame.getY() == Y2)
+                    || (flame.getX() == X2 && flame.getY() == Y1)
+                    || (flame.getX() == X2 && flame.getY() == Y2)) {
+                setDead(true);
+                setTime(0);
+            }
+        }
+        for (Balloom balloom: ballooms) {
+            if ((balloom.getX() == X1 && balloom.getY() == Y1)
+                    || (balloom.getX() == X1 && balloom.getY() == Y2)
+                    || (balloom.getX() == X2 && balloom.getY() == Y1)
+                    || (balloom.getX() == X2 && balloom.getY() == Y2)) {
+                setDead(true);
+                setTime(0);
+            }
+        }
+        for (Oneal oneal: oneals) {
+            if ((oneal.getX() == X1 && oneal.getY() == Y1)
+                    || (oneal.getX() == X1 && oneal.getY() == Y2)
+                    || (oneal.getX() == X2 && oneal.getY() == Y1)
+                    || (oneal.getX() == X2 && oneal.getY() == Y2)) {
+                setDead(true);
+                setTime(0);
+            }
+        }
+    }
+
+    public void deadBomber() {
+        if (isDead) {
+            if (time == 0) {
+                img = Sprite.player_dead1.getFxImage();
+            }
+            time ++;
+        }
+        if (time == 5) {
+            img = Sprite.player_dead2.getFxImage();
+        }
+        else if (time == 10) {
+            img = Sprite.player_dead3.getFxImage();
+        }
+
+    }
+
     @Override
     public void update() {
+        deadBomber();
         if (BombermanGame.gotoEast) {
             gotoEast();
         } else if (BombermanGame.gotoWest) {

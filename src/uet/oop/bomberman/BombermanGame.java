@@ -32,8 +32,10 @@ public class BombermanGame extends Application {
     
     private GraphicsContext gc;
     private Canvas canvas;
+    public static Bomber bomberman;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
+    private List<Bomb> bombs = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -69,6 +71,10 @@ public class BombermanGame extends Application {
                 break;
                 case RIGHT: gotoEast = true;
                 break;
+                case SPACE: {
+                    Bomb bomb = new Bomb(bomberman.getX(), bomberman.getY(), Sprite.bomb.getFxImage());
+                    bombs.add(bomb);
+                }
             }
         });
 
@@ -97,8 +103,7 @@ public class BombermanGame extends Application {
         //createMap();
         loadMap();
 
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        entities.add(bomberman);
+        bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
     }
 
     public void createMap() {
@@ -141,30 +146,43 @@ public class BombermanGame extends Application {
                         entities.add(object);
                     }
                     else if (textInALine.charAt(j) == 'x') {
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new Portal(j, i, Sprite.portal.getFxImage());
                         entities.add(object);
                     }
-                    /*else if (textInALine.charAt(j) == 'p') {
-                        object = new Bomber(j, i, Sprite.player_down.getFxImage());
-                        entities.add(object);
-                    }*/
+                    else if (textInALine.charAt(j) == 'p') {
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
+                        bomberman = new Bomber(j, i, Sprite.player_right.getFxImage());
+                    }
                     else if (textInALine.charAt(j) == '1') {
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new Balloom(j, i, Sprite.balloom_left1.getFxImage());
                         entities.add(object);
                     }
                     else if (textInALine.charAt(j) == '2') {
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
                         entities.add(object);
                     }
                     else if (textInALine.charAt(j) == 's') {
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new SpeedItem(j, i, Sprite.powerup_speed.getFxImage());
                         entities.add(object);
                     }
                     else if (textInALine.charAt(j) == 'f') {
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new FlameItem(j, i, Sprite.powerup_flames.getFxImage());
                         entities.add(object);
                     }
                     else if (textInALine.charAt(j) == 'b') {
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new Bomb(j, i, Sprite.powerup_bombs.getFxImage());
                         entities.add(object);
                     }
@@ -185,13 +203,27 @@ public class BombermanGame extends Application {
         }
     }
 
+    public void updateBomb() {
+        for (int i = 0; i< bombs.size(); i++) {
+            if (bombs.get(i).getTime() >= 135) {
+                bombs.remove(i);
+                i--;
+            }
+        }
+    }
+
     public void update() {
         entities.forEach(Entity::update);
+        bombs.forEach(Bomb::update);
+        bomberman.update();
+        updateBomb();
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+        bombs.forEach(g -> g.render(gc));
+        bomberman.render(gc);
     }
 }
