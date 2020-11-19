@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.bfs.Point;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Bomber extends Entity {
@@ -32,9 +33,18 @@ public class Bomber extends Entity {
         Bomber.speedY = speedY;
     }
 
+    public int getX() {
+        return (x + 3) / 32;
+    }
+    public int getY() {
+        return (y + 3) / 32;
+    }
+
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
     }
+
+
 
     public void gotoEast() {
         east++;

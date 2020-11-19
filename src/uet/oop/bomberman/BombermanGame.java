@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BombermanGame extends Application {
-    
+
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
     public static String[] map = GetMap.getMap("res/levels/Level1.txt");
@@ -29,7 +29,7 @@ public class BombermanGame extends Application {
     public static boolean gotoWest;
     public static boolean gotoNorth;
     public static boolean gotoSouth;
-    
+    public static Bomber bomberman;
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
@@ -62,13 +62,13 @@ public class BombermanGame extends Application {
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP: gotoNorth = true;
-                break;
+                    break;
                 case DOWN: gotoSouth = true;
-                break;
+                    break;
                 case LEFT: gotoWest = true;
-                break;
+                    break;
                 case RIGHT: gotoEast = true;
-                break;
+                    break;
             }
         });
 
@@ -97,8 +97,6 @@ public class BombermanGame extends Application {
         //createMap();
         loadMap();
 
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        entities.add(bomberman);
     }
 
     public void createMap() {
@@ -141,30 +139,44 @@ public class BombermanGame extends Application {
                         entities.add(object);
                     }
                     else if (textInALine.charAt(j) == 'x') {
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new Portal(j, i, Sprite.portal.getFxImage());
                         entities.add(object);
                     }
-                    /*else if (textInALine.charAt(j) == 'p') {
-                        object = new Bomber(j, i, Sprite.player_down.getFxImage());
-                        entities.add(object);
-                    }*/
+                    else if (textInALine.charAt(j) == 'p') {
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
+                        bomberman = new Bomber(j, i, Sprite.player_right.getFxImage());
+                        entities.add(bomberman);
+                    }
                     else if (textInALine.charAt(j) == '1') {
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new Balloom(j, i, Sprite.balloom_left1.getFxImage());
                         entities.add(object);
                     }
                     else if (textInALine.charAt(j) == '2') {
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
                         entities.add(object);
                     }
                     else if (textInALine.charAt(j) == 's') {
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new SpeedItem(j, i, Sprite.powerup_speed.getFxImage());
                         entities.add(object);
                     }
                     else if (textInALine.charAt(j) == 'f') {
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new FlameItem(j, i, Sprite.powerup_flames.getFxImage());
                         entities.add(object);
                     }
                     else if (textInALine.charAt(j) == 'b') {
+                        object = new Grass(j, i, Sprite.grass.getFxImage());
+                        stillObjects.add(object);
                         object = new Bomb(j, i, Sprite.powerup_bombs.getFxImage());
                         entities.add(object);
                     }
