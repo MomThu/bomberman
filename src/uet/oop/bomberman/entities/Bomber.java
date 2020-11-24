@@ -224,7 +224,7 @@ public class Bomber extends Entity {
         }
     }
 
-    public void collideToDead(List<Flame> flames, List<Balloom> ballooms, List<Oneal> oneals) {
+    public void collideToDead(List<Flame> flames, List<CanDeadEntity> enemies) {
         int X1 = (x + 3) / 32;
         int Y1 = (y + 3) / 32;
         int X2 = (x + 24) / 32;
@@ -238,20 +238,11 @@ public class Bomber extends Entity {
                 setTime(0);
             }
         }
-        for (Balloom balloom: ballooms) {
-            if ((balloom.getX() == X1 && balloom.getY() == Y1)
-                    || (balloom.getX() == X1 && balloom.getY() == Y2)
-                    || (balloom.getX() == X2 && balloom.getY() == Y1)
-                    || (balloom.getX() == X2 && balloom.getY() == Y2)) {
-                setDead(true);
-                setTime(0);
-            }
-        }
-        for (Oneal oneal: oneals) {
-            if ((oneal.getX() == X1 && oneal.getY() == Y1)
-                    || (oneal.getX() == X1 && oneal.getY() == Y2)
-                    || (oneal.getX() == X2 && oneal.getY() == Y1)
-                    || (oneal.getX() == X2 && oneal.getY() == Y2)) {
+        for (CanDeadEntity entity: enemies) {
+            if ((entity.get_x() == X1 && entity.get_y() == Y1)
+                    || (entity.get_x() == X1 && entity.get_y() == Y2)
+                    || (entity.get_x() == X2 && entity.get_y() == Y1)
+                    || (entity.get_x() == X2 && entity.get_y() == Y2)) {
                 setDead(true);
                 setTime(0);
             }
@@ -259,7 +250,7 @@ public class Bomber extends Entity {
     }
 
     public void deadBomber() {
-        if (isDead) {
+        if (isDead()) {
             if (time == 0) {
                 img = Sprite.player_dead1.getFxImage();
             }

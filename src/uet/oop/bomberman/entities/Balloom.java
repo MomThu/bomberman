@@ -11,28 +11,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
-public class Balloom extends Entity {
+public class Balloom extends CanDeadEntity {
     int ok = 0, ok1 = 0, ok2 = 0;
     int vt1 = 0, vt2 = 0;
-
-    private int time;
-    private boolean isDead;
-
-    public void setTime(int time) {
-        this.time = time;
-    }
-
-    public int getTime() {
-        return time;
-    }
-
-    public void setDead(boolean dead) {
-        isDead = dead;
-    }
-
-    public boolean isDead() {
-        return isDead;
-    }
 
     public Balloom(int x, int y, Image img) {
         super(x, y, img);
@@ -179,12 +160,19 @@ public class Balloom extends Entity {
         }
     }
 
-    public void collideFlame(List<Flame> flames) {
-
+    @Override
+    public void deadMoment() {
+        if (isDead()) {
+            if (time == 0) {
+                img = Sprite.balloom_dead.getFxImage();
+            }
+            time ++;
+        }
     }
 
     @Override
     public void update() {
+        deadMoment();
         int value;
         Random rd = new Random();
         value = rd.nextInt(2) + 1;

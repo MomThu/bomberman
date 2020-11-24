@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class BombermanGame extends Application {
@@ -36,6 +37,11 @@ public class BombermanGame extends Application {
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
     private List<Bomb> bombs = new ArrayList<>();
+    private List<Flame> flames = new ArrayList<>();
+    private List<Brick> bricks = new ArrayList<>();
+    //brick+enemies
+    private List<CanDeadEntity> canDeadObjects = new ArrayList<>();
+    private List<CanDeadEntity> enemies = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -60,7 +66,6 @@ public class BombermanGame extends Application {
         stage.show();
 
         //input huong di chuyen bomber
-
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP: gotoNorth = true;
@@ -122,99 +127,113 @@ public class BombermanGame extends Application {
     }
 
     public void loadMap() {
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader("res/levels/Level1.txt"));
-            String textInALine;
-            String s;
-            int row;
-            int column;
-            s = br.readLine();
-            Entity object;
-            String[] words = s.split("\\s");
-            row = Integer.parseInt(words[1]);
-            column = Integer.parseInt(words[2]);
-            for (int i = 0; i < row; i++) {
-                textInALine = br.readLine();
-                for (int j = 0; j < column; j++) {
-                    if (textInALine.charAt(j) == '#') {
-                        object = new Wall(j, i, Sprite.wall.getFxImage());
-                        stillObjects.add(object);
-                    }
-                    else if (textInALine.charAt(j) == '*') {
-                        object = new Brick(j, i, Sprite.brick.getFxImage());
-                        entities.add(object);
-                    }
-                    else if (textInALine.charAt(j) == 'x') {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                        object = new Portal(j, i, Sprite.portal.getFxImage());
-                        entities.add(object);
-                    }
-                    else if (textInALine.charAt(j) == 'p') {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                        bomberman = new Bomber(j, i, Sprite.player_right.getFxImage());
-                    }
-                    else if (textInALine.charAt(j) == '1') {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                        object = new Balloom(j, i, Sprite.balloom_left1.getFxImage());
-                        entities.add(object);
-                    }
-                    else if (textInALine.charAt(j) == '2') {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                        object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
-                        entities.add(object);
-                    }
-                    else if (textInALine.charAt(j) == 's') {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                        object = new SpeedItem(j, i, Sprite.powerup_speed.getFxImage());
-                        entities.add(object);
-                    }
-                    else if (textInALine.charAt(j) == 'f') {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                        object = new FlameItem(j, i, Sprite.powerup_flames.getFxImage());
-                        entities.add(object);
-                    }
-                    else if (textInALine.charAt(j) == 'b') {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                        object = new Bomb(j, i, Sprite.powerup_bombs.getFxImage());
-                        entities.add(object);
-                    }
-                    else {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                    }
+        for(int j = 0; j < WIDTH; j++) {
+            for (int i = 0; i < HEIGHT; i++) {
+                Entity object;
+                if (map[i].charAt(j) == '#') {
+                    object = new Wall(j, i, Sprite.wall.getFxImage());
+                    stillObjects.add(object);
                 }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+                else if (map[i].charAt(j) == '*') {
+                    object = new Brick(j, i, Sprite.brick.getFxImage());
+                    entities.add(object);
+                }
+                else if (map[i].charAt(j) == 'x') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new Portal(j, i, Sprite.portal.getFxImage());
+                    entities.add(object);
+                }
+                else if (map[i].charAt(j) == 'p') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    bomberman = new Bomber(j, i, Sprite.player_right.getFxImage());
+                }
+                else if (map[i].charAt(j) == '1') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new Balloom(j, i, Sprite.balloom_left1.getFxImage());
+                    entities.add(object);
+                }
+                else if (map[i].charAt(j) == '2') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
+                    entities.add(object);
+                }
+                /**else if (map[i].charAt(j) == '3') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new Kondoria(j, i, Sprite.kondoria_left1.getFxImage());
+                    entities.add(object);
+                }*/
+                else if (map[i].charAt(j) == 's') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new SpeedItem(j, i, Sprite.powerup_speed.getFxImage());
+                    entities.add(object);
+                }
+                else if (map[i].charAt(j) == 'f') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new FlameItem(j, i, Sprite.powerup_flames.getFxImage());
+                    entities.add(object);
+                }
+                else if (map[i].charAt(j) == 'b') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new Bomb(j, i, Sprite.powerup_bombs.getFxImage());
+                    entities.add(object);
+                }
+                else {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                }
             }
         }
     }
 
+
     public void updateBomb() {
         for (int i = 0; i< bombs.size(); i++) {
+            List<Flame> newFlames = bombs.get(i).createFlame();
+            for (Flame flame: newFlames) {
+                flames.add(flame);
+                //flame.killObjects(canDeadObjects);
+            }
             if (bombs.get(i).getTime() >= 135) {
                 bombs.remove(i);
                 i--;
             }
         }
+        for (int i = 0; i < flames.size(); i ++) {
+            if (flames.get(i).getTime() == 0) {
+                flames.get(i).killObjects(canDeadObjects);
+            }
+            if (flames.get(i).getTime() >= 15) {
+                flames.remove(i);
+                i--;
+            }
+        }
+        for (int i = 0; i < enemies.size(); i ++) {
+            if (enemies.get(i).getTime() >= 5) {
+                enemies.remove(i);
+                i--;
+            }
+        }
+        for (int i = 0; i < bricks.size(); i ++) {
+            if (bricks.get(i).getTime() >= 10) {
+                bricks.remove(i);
+                i--;
+            }
+        }
+        bomberman.collideToDead(flames, enemies);
     }
 
     public void update() {
         entities.forEach(Entity::update);
         bombs.forEach(Bomb::update);
+        flames.forEach(Flame::update);
         bomberman.update();
         updateBomb();
     }
@@ -224,6 +243,7 @@ public class BombermanGame extends Application {
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
         bombs.forEach(g -> g.render(gc));
+        flames.forEach(g -> g.render(gc));
         bomberman.render(gc);
     }
 }
