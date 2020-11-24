@@ -8,13 +8,42 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 public class Balloom extends Entity {
     int ok = 0, ok1 = 0, ok2 = 0;
     int vt1 = 0, vt2 = 0;
+
+    private int time;
+    private boolean isDead;
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
     public Balloom(int x, int y, Image img) {
         super(x, y, img);
+    }
+
+    public int getX() {
+        return x / 32;
+    }
+
+    public int getY() {
+        return y / 32;
     }
 
     public void browse_row() {
@@ -119,6 +148,7 @@ public class Balloom extends Entity {
                 else {
                     if (BombermanGame.map[(y-1)/32].charAt(x/32) == '#'
                             || BombermanGame.map[(y-1)/32].charAt(x/32) == '*') {
+                        //vt2 = x;
                         ok1 = 0;
                         y++;
                         if (y%30 == 0) {
@@ -149,6 +179,10 @@ public class Balloom extends Entity {
         }
     }
 
+    public void collideFlame(List<Flame> flames) {
+
+    }
+
     @Override
     public void update() {
         int value;
@@ -169,5 +203,5 @@ public class Balloom extends Entity {
                 && BombermanGame.map[(y-1)/32].charAt(x/32) != '*'))) {
             ok2 = 1;
         }
-        }
     }
+}

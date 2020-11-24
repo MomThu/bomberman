@@ -17,6 +17,14 @@ public class Oneal extends Entity {
         super(x, y, img);
     }
 
+    public int getX() {
+        return x / 32;
+    }
+
+    public int getY() {
+        return y / 32;
+    }
+
     public char direction;
     public int ok = 0, ok1 = 0, ok2 = 0;
     public int vt1 = 0, vt2 = 0;

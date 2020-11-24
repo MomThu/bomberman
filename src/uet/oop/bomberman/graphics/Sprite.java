@@ -120,7 +120,40 @@ public class Sprite {
 	public static Sprite mob_dead1 = new Sprite(DEFAULT_SIZE, 15, 0, SpriteSheet.tiles, 16, 16);
 	public static Sprite mob_dead2 = new Sprite(DEFAULT_SIZE, 15, 1, SpriteSheet.tiles, 16, 16);
 	public static Sprite mob_dead3 = new Sprite(DEFAULT_SIZE, 15, 2, SpriteSheet.tiles, 16, 16);
-	
+
+	//Ghost
+	public static Sprite ghost_left1 = new Sprite(DEFAULT_SIZE, 6, 5, SpriteSheet.tiles, 16, 16);
+	public static Sprite ghost_left2 = new Sprite(DEFAULT_SIZE, 6, 6, SpriteSheet.tiles, 16, 16);
+	public static Sprite ghost_left3 = new Sprite(DEFAULT_SIZE, 6, 7, SpriteSheet.tiles, 16, 16);
+
+	public static Sprite ghost_right1 = new Sprite(DEFAULT_SIZE, 7, 5, SpriteSheet.tiles, 16, 16);
+	public static Sprite ghost_right2 = new Sprite(DEFAULT_SIZE, 7, 6, SpriteSheet.tiles, 16, 16);
+	public static Sprite ghost_right3 = new Sprite(DEFAULT_SIZE, 7, 7, SpriteSheet.tiles, 16, 16);
+
+	public static Sprite ghost_dead = new Sprite(DEFAULT_SIZE, 6, 8, SpriteSheet.tiles, 16, 16);
+
+	//RedCoin
+	public static Sprite redcoin_left1 = new Sprite(DEFAULT_SIZE, 12, 5, SpriteSheet.tiles, 16, 16);
+	public static Sprite redcoin_left2 = new Sprite(DEFAULT_SIZE, 12, 6, SpriteSheet.tiles, 16, 16);
+	public static Sprite redcoin_left3 = new Sprite(DEFAULT_SIZE, 12, 7, SpriteSheet.tiles, 16, 16);
+
+	public static Sprite redcoin_right1 = new Sprite(DEFAULT_SIZE, 13, 5, SpriteSheet.tiles, 16, 16);
+	public static Sprite redcoin_right2 = new Sprite(DEFAULT_SIZE, 13, 6, SpriteSheet.tiles, 16, 16);
+	public static Sprite redcoin_right3 = new Sprite(DEFAULT_SIZE, 13, 7, SpriteSheet.tiles, 16, 16);
+
+	public static Sprite redcoin_dead = new Sprite(DEFAULT_SIZE, 12, 8, SpriteSheet.tiles, 16, 16);
+
+	//OrangeCoin
+	public static Sprite orangecoin_left1 = new Sprite(DEFAULT_SIZE, 14, 5, SpriteSheet.tiles, 16, 16);
+	public static Sprite orangecoin_left2 = new Sprite(DEFAULT_SIZE, 14, 6, SpriteSheet.tiles, 16, 16);
+	public static Sprite orangecoin_left3 = new Sprite(DEFAULT_SIZE, 14, 7, SpriteSheet.tiles, 16, 16);
+
+	public static Sprite orangecoin_right1 = new Sprite(DEFAULT_SIZE, 15, 5, SpriteSheet.tiles, 16, 16);
+	public static Sprite orangecoin_right2 = new Sprite(DEFAULT_SIZE, 15, 6, SpriteSheet.tiles, 16, 16);
+	public static Sprite orangecoin_right3 = new Sprite(DEFAULT_SIZE, 15, 7, SpriteSheet.tiles, 16, 16);
+
+	public static Sprite orangecoin_dead = new Sprite(DEFAULT_SIZE, 14, 8, SpriteSheet.tiles, 16, 16);
+
 	/*
 	|--------------------------------------------------------------------------
 	| Bomb Sprites

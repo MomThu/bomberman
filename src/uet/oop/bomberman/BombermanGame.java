@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BombermanGame extends Application {
-
+    
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
     public static String[] map = GetMap.getMap("res/levels/Level1.txt");
@@ -29,11 +29,13 @@ public class BombermanGame extends Application {
     public static boolean gotoWest;
     public static boolean gotoNorth;
     public static boolean gotoSouth;
-    public static Bomber bomberman;
+    
     private GraphicsContext gc;
     private Canvas canvas;
+    public static Bomber bomberman;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
+    private List<Bomb> bombs = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -62,13 +64,17 @@ public class BombermanGame extends Application {
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP: gotoNorth = true;
-                    break;
+                break;
                 case DOWN: gotoSouth = true;
-                    break;
+                break;
                 case LEFT: gotoWest = true;
-                    break;
+                break;
                 case RIGHT: gotoEast = true;
-                    break;
+                break;
+                case SPACE: {
+                    Bomb bomb = new Bomb(bomberman.getX(), bomberman.getY(), Sprite.bomb.getFxImage());
+                    bombs.add(bomb);
+                }
             }
         });
 
@@ -97,6 +103,7 @@ public class BombermanGame extends Application {
         //createMap();
         loadMap();
 
+        bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
     }
 
     public void createMap() {
@@ -115,95 +122,93 @@ public class BombermanGame extends Application {
     }
 
     public void loadMap() {
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader("res/levels/Level1.txt"));
-            String textInALine;
-            String s;
-            int row;
-            int column;
-            s = br.readLine();
-            Entity object;
-            String[] words = s.split("\\s");
-            row = Integer.parseInt(words[1]);
-            column = Integer.parseInt(words[2]);
-            for (int i = 0; i < row; i++) {
-                textInALine = br.readLine();
-                for (int j = 0; j < column; j++) {
-                    if (textInALine.charAt(j) == '#') {
-                        object = new Wall(j, i, Sprite.wall.getFxImage());
-                        stillObjects.add(object);
-                    }
-                    else if (textInALine.charAt(j) == '*') {
-                        object = new Brick(j, i, Sprite.brick.getFxImage());
-                        entities.add(object);
-                    }
-                    else if (textInALine.charAt(j) == 'x') {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                        object = new Portal(j, i, Sprite.portal.getFxImage());
-                        entities.add(object);
-                    }
-                    else if (textInALine.charAt(j) == 'p') {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                        bomberman = new Bomber(j, i, Sprite.player_right.getFxImage());
-                        entities.add(bomberman);
-                    }
-                    else if (textInALine.charAt(j) == '1') {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                        object = new Balloom(j, i, Sprite.balloom_left1.getFxImage());
-                        entities.add(object);
-                    }
-                    else if (textInALine.charAt(j) == '2') {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                        object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
-                        entities.add(object);
-                    }
-                    else if (textInALine.charAt(j) == 's') {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                        object = new SpeedItem(j, i, Sprite.powerup_speed.getFxImage());
-                        entities.add(object);
-                    }
-                    else if (textInALine.charAt(j) == 'f') {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                        object = new FlameItem(j, i, Sprite.powerup_flames.getFxImage());
-                        entities.add(object);
-                    }
-                    else if (textInALine.charAt(j) == 'b') {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                        object = new Bomb(j, i, Sprite.powerup_bombs.getFxImage());
-                        entities.add(object);
-                    }
-                    else {
-                        object = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(object);
-                    }
+        for(int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                Entity object;
+                if (map[i].charAt(j) == '#') {
+                    object = new Wall(j, i, Sprite.wall.getFxImage());
+                    stillObjects.add(object);
+                }
+                else if (map[i].charAt(j) == '*') {
+                    object = new Brick(j, i, Sprite.brick.getFxImage());
+                    entities.add(object);
+                }
+                else if (map[i].charAt(j) == 'x') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new Portal(j, i, Sprite.portal.getFxImage());
+                    entities.add(object);
+                }
+                else if (map[i].charAt(j) == 'p') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    bomberman = new Bomber(j, i, Sprite.player_right.getFxImage());
+                }
+                else if (map[i].charAt(j) == '1') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new Balloom(j, i, Sprite.balloom_left1.getFxImage());
+                    entities.add(object);
+                }
+                else if (map[i].charAt(j) == '2') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
+                    entities.add(object);
+                }
+                else if (map[i].charAt(j) == '3') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new Kondoria(j, i, Sprite.kondoria_left1.getFxImage());
+                    entities.add(object);
+                }
+                else if (map[i].charAt(j) == 's') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new SpeedItem(j, i, Sprite.powerup_speed.getFxImage());
+                    entities.add(object);
+                }
+                else if (map[i].charAt(j) == 'f') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new FlameItem(j, i, Sprite.powerup_flames.getFxImage());
+                    entities.add(object);
+                }
+                else if (map[i].charAt(j) == 'b') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new Bomb(j, i, Sprite.powerup_bombs.getFxImage());
+                    entities.add(object);
+                }
+                else {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+        }
+    }
+
+    public void updateBomb() {
+        for (int i = 0; i< bombs.size(); i++) {
+            if (bombs.get(i).getTime() >= 135) {
+                bombs.remove(i);
+                i--;
             }
         }
     }
 
     public void update() {
         entities.forEach(Entity::update);
+        bombs.forEach(Bomb::update);
+        bomberman.update();
+        updateBomb();
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+        bombs.forEach(g -> g.render(gc));
+        bomberman.render(gc);
     }
 }
