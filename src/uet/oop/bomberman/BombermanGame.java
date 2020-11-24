@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class BombermanGame extends Application {
@@ -36,6 +37,11 @@ public class BombermanGame extends Application {
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
     private List<Bomb> bombs = new ArrayList<>();
+    private List<Flame> flames = new ArrayList<>();
+    private List<Brick> bricks = new ArrayList<>();
+    //brick+enemies
+    private List<CanDeadEntity> canDeadObjects = new ArrayList<>();
+    private List<CanDeadEntity> enemies = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -60,7 +66,6 @@ public class BombermanGame extends Application {
         stage.show();
 
         //input huong di chuyen bomber
-
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP: gotoNorth = true;
@@ -122,8 +127,8 @@ public class BombermanGame extends Application {
     }
 
     public void loadMap() {
-        for(int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
+        for(int j = 0; j < WIDTH; j++) {
+            for (int i = 0; i < HEIGHT; i++) {
                 Entity object;
                 if (map[i].charAt(j) == '#') {
                     object = new Wall(j, i, Sprite.wall.getFxImage());
@@ -162,6 +167,12 @@ public class BombermanGame extends Application {
                     object = new Kondoria(j, i, Sprite.kondoria_left1.getFxImage());
                     entities.add(object);
                 }
+                else if (map[i].charAt(j) == '4') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new RedCoin(j, i, Sprite.redcoin_left1.getFxImage());
+                    entities.add(object);
+                }
                 else if (map[i].charAt(j) == 's') {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     stillObjects.add(object);
@@ -188,18 +199,47 @@ public class BombermanGame extends Application {
         }
     }
 
+
     public void updateBomb() {
         for (int i = 0; i< bombs.size(); i++) {
+            List<Flame> newFlames = bombs.get(i).createFlame();
+            for (Flame flame: newFlames) {
+                flames.add(flame);
+                //flame.killObjects(canDeadObjects);
+            }
             if (bombs.get(i).getTime() >= 135) {
                 bombs.remove(i);
                 i--;
             }
         }
+        for (int i = 0; i < flames.size(); i ++) {
+            if (flames.get(i).getTime() == 0) {
+                flames.get(i).killObjects(canDeadObjects);
+            }
+            if (flames.get(i).getTime() >= 15) {
+                flames.remove(i);
+                i--;
+            }
+        }
+        for (int i = 0; i < enemies.size(); i ++) {
+            if (enemies.get(i).getTime() >= 5) {
+                enemies.remove(i);
+                i--;
+            }
+        }
+        for (int i = 0; i < bricks.size(); i ++) {
+            if (bricks.get(i).getTime() >= 10) {
+                bricks.remove(i);
+                i--;
+            }
+        }
+        bomberman.collideToDead(flames, enemies);
     }
 
     public void update() {
         entities.forEach(Entity::update);
         bombs.forEach(Bomb::update);
+        flames.forEach(Flame::update);
         bomberman.update();
         updateBomb();
     }
@@ -209,6 +249,7 @@ public class BombermanGame extends Application {
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
         bombs.forEach(g -> g.render(gc));
+        flames.forEach(g -> g.render(gc));
         bomberman.render(gc);
     }
 }

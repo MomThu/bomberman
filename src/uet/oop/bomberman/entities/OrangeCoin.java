@@ -1,5 +1,4 @@
 package uet.oop.bomberman.entities;
 
-public class Ghost {
-
+public class OrangeCoin {
 }

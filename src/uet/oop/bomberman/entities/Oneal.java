@@ -10,9 +10,10 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
-public class Oneal extends Entity {
+public class Oneal extends CanDeadEntity {
     public Oneal(int x, int y, Image img) {
         super(x, y, img);
     }
@@ -162,7 +163,18 @@ public class Oneal extends Entity {
     }
 
     @Override
+    public void deadMoment() {
+        if (isDead()) {
+            if (time == 0) {
+                img = Sprite.oneal_dead.getFxImage();
+            }
+            time ++;
+        }
+    }
+
+    @Override
     public void update() {
+        deadMoment();
         BFS bfs = new BFS();
         Point point2 = new Point(x/32, y/32);
         Point point1 = new Point(BombermanGame.bomberman.getX(), BombermanGame.bomberman.getY());

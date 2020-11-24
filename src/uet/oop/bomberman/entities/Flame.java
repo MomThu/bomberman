@@ -3,6 +3,8 @@ package uet.oop.bomberman.entities;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.util.List;
+
 public class Flame extends Entity{
 
     private String typeExplosion;
@@ -36,6 +38,24 @@ public class Flame extends Entity{
     public Flame(int xUnit, int yUnit, Image img, String typeExplosion) {
         super(xUnit, yUnit, img);
         this.typeExplosion = typeExplosion;
+    }
+
+    public void killObjects(List<CanDeadEntity> canDeadObjects) {
+        int X = x / 32;
+        int Y = y / 32;
+        for (CanDeadEntity entity: canDeadObjects) {
+            int X1 = entity.x / 32;
+            int X2 = (entity.x + 32) / 32;
+            int Y1 = entity.y / 32;
+            int Y2 = (entity.y + 32) / 32;
+            if ((X1 == X && Y1 == Y)
+                    || (X1 == X && Y2 == Y)
+                    || (X2 == X && Y1 == Y)
+                    || (X2 == X && Y2 == Y)) {
+                entity.setDead(true);
+                entity.setTime(0);
+            }
+        }
     }
 
     @Override
