@@ -39,6 +39,8 @@ public class BombermanGame extends Application {
     private List<Bomb> bombs = new ArrayList<>();
     private List<Flame> flames = new ArrayList<>();
     private List<Brick> bricks = new ArrayList<>();
+    private List<Portal> portals = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
     //brick+enemies
     private List<CanDeadEntity> canDeadObjects = new ArrayList<>();
     private List<CanDeadEntity> enemies = new ArrayList<>();
@@ -135,61 +137,79 @@ public class BombermanGame extends Application {
                     stillObjects.add(object);
                 }
                 else if (map[i].charAt(j) == '*') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
                     object = new Brick(j, i, Sprite.brick.getFxImage());
-                    entities.add(object);
+                    bricks.add((Brick)object);
                 }
                 else if (map[i].charAt(j) == 'x') {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     stillObjects.add(object);
+                    object = new Brick(j, i, Sprite.brick.getFxImage());
+                    bricks.add((Brick)object);
                     object = new Portal(j, i, Sprite.portal.getFxImage());
-                    entities.add(object);
+                    portals.add((Portal)object);
                 }
                 else if (map[i].charAt(j) == 'p') {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     stillObjects.add(object);
                     bomberman = new Bomber(j, i, Sprite.player_right.getFxImage());
+                    BombermanGame.map[i] = BombermanGame.map[i].substring(0, j) + "*" +
+                            BombermanGame.map[i].substring(j+1, BombermanGame.map[i].length());
                 }
                 else if (map[i].charAt(j) == '1') {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     stillObjects.add(object);
                     object = new Balloom(j, i, Sprite.balloom_left1.getFxImage());
-                    entities.add(object);
+                    enemies.add((Balloom)object);
                 }
                 else if (map[i].charAt(j) == '2') {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     stillObjects.add(object);
                     object = new Oneal(j, i, Sprite.oneal_left1.getFxImage());
-                    entities.add(object);
+                    enemies.add((Oneal)object);
                 }
                 else if (map[i].charAt(j) == '3') {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     stillObjects.add(object);
                     object = new Kondoria(j, i, Sprite.kondoria_left1.getFxImage());
-                    entities.add(object);
+                    enemies.add((Kondoria)object);
                 }
                 else if (map[i].charAt(j) == '4') {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     stillObjects.add(object);
                     object = new RedCoin(j, i, Sprite.redcoin_left1.getFxImage());
-                    entities.add(object);
+                    enemies.add((RedCoin)object);
                 }
                 else if (map[i].charAt(j) == 's') {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     stillObjects.add(object);
+                    object = new Brick(j, i, Sprite.brick.getFxImage());
+                    bricks.add((Brick)object);
                     object = new SpeedItem(j, i, Sprite.powerup_speed.getFxImage());
-                    entities.add(object);
+                    items.add((SpeedItem)object);
+                    BombermanGame.map[i] = BombermanGame.map[i].substring(0, j) + "*" +
+                            BombermanGame.map[i].substring(j+1, BombermanGame.map[i].length());
                 }
                 else if (map[i].charAt(j) == 'f') {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     stillObjects.add(object);
+                    object = new Brick(j, i, Sprite.brick.getFxImage());
+                    bricks.add((Brick)object);
                     object = new FlameItem(j, i, Sprite.powerup_flames.getFxImage());
-                    entities.add(object);
+                    items.add((FlameItem)object);
+                    BombermanGame.map[i] = BombermanGame.map[i].substring(0, j) + "*" +
+                            BombermanGame.map[i].substring(j+1, BombermanGame.map[i].length());
                 }
                 else if (map[i].charAt(j) == 'b') {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     stillObjects.add(object);
+                    object = new Brick(j, i, Sprite.brick.getFxImage());
+                    bricks.add((Brick)object);
                     object = new Bomb(j, i, Sprite.powerup_bombs.getFxImage());
-                    entities.add(object);
+                    items.add((BombItem)object);
+                    BombermanGame.map[i] = BombermanGame.map[i].substring(0, j) + "*" +
+                            BombermanGame.map[i].substring(j+1, BombermanGame.map[i].length());
                 }
                 else {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
@@ -238,6 +258,10 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(Entity::update);
+        enemies.forEach(Entity::update);
+        bricks.forEach(Entity::update);
+        items.forEach(Entity::update);
+        canDeadObjects.forEach(Entity::update);
         bombs.forEach(Bomb::update);
         flames.forEach(Flame::update);
         bomberman.update();
@@ -247,7 +271,12 @@ public class BombermanGame extends Application {
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
+        portals.forEach(g -> g.render(gc));
+        items.forEach(g -> g.render(gc));
+        bricks.forEach(g -> g.render(gc));
+        canDeadObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+        enemies.forEach(g -> g.render(gc));
         bombs.forEach(g -> g.render(gc));
         flames.forEach(g -> g.render(gc));
         bomberman.render(gc);

@@ -8,13 +8,18 @@ import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.Random;
 
-public class Kondoria extends Entity{
+public class Kondoria extends CanDeadEntity{
     public Kondoria(int x, int y, Image img) {
         super(x, y, img);
     }
 
     public char direction;
     public int ok = 0, ok1 = 0, ok2 = 0;
+
+    @Override
+    public void deadMoment() {
+
+    }
 
     public void browse_row() {
         if (x >=0 && x <= 30*32) {
