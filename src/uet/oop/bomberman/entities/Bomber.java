@@ -3,12 +3,23 @@ package uet.oop.bomberman.entities;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.SoundEffects;
 
 import java.util.List;
 
 public class Bomber extends Entity {
 
     private int bombSize = 1;
+
+    private int numOfBomb = 2;
+
+    public int getNumOfBomb() {
+        return numOfBomb;
+    }
+
+    public void setNumOfBomb(int numOfBomb) {
+        this.numOfBomb = numOfBomb;
+    }
 
     public int getBombSize() {
         return bombSize;
@@ -78,10 +89,10 @@ public class Bomber extends Entity {
         north = 0;
         south = 0;
         boolean check = false;
-        int X = x / 32;
-        int Y = y / 32;
-        int X1 = (x + 24) / 32;
-        int Y1 = (y + 31) / 32;
+        int X = (x + 2) / 32;
+        int Y = (y + 2) / 32;
+        int X1 = (x + 22) / 32;
+        int Y1 = (y + 30) / 32;
         if (BombermanGame.map[Y].charAt(X) == 'B' || BombermanGame.map[Y].charAt(X1) == 'B'
                 || BombermanGame.map[Y1].charAt(X) == 'B' || BombermanGame.map[Y1].charAt(X1) == 'B') {
             check = true;
@@ -139,10 +150,10 @@ public class Bomber extends Entity {
         north = 0;
         south = 0;
         boolean check = false;
-        int X = x / 32;
-        int Y = y / 32;
-        int X1 = (x + 24) / 32;
-        int Y1 = (y + 31) / 32;
+        int X = (x + 2) / 32;
+        int Y = (y + 2) / 32;
+        int X1 = (x + 22) / 32;
+        int Y1 = (y + 30) / 32;
         if (BombermanGame.map[Y].charAt(X) == 'B' || BombermanGame.map[Y].charAt(X1) == 'B'
                 || BombermanGame.map[Y1].charAt(X) == 'B' || BombermanGame.map[Y1].charAt(X1) == 'B') {
             check = true;
@@ -200,10 +211,10 @@ public class Bomber extends Entity {
         north++;
         south = 0;
         boolean check = false;
-        int X = x / 32;
-        int Y = y / 32;
-        int X1 = (x + 24) / 32;
-        int Y1 = (y + 31) / 32;
+        int X = (x + 2) / 32;
+        int Y = (y + 2) / 32;
+        int X1 = (x + 22) / 32;
+        int Y1 = (y + 30) / 32;
         if (BombermanGame.map[Y].charAt(X) == 'B' || BombermanGame.map[Y].charAt(X1) == 'B'
                 || BombermanGame.map[Y1].charAt(X) == 'B' || BombermanGame.map[Y1].charAt(X1) == 'B') {
             check = true;
@@ -260,10 +271,10 @@ public class Bomber extends Entity {
         north = 0;
         south++;
         boolean check = false;
-        int X = x / 32;
-        int Y = y / 32;
-        int X1 = (x + 24) / 32;
-        int Y1 = (y + 31) / 32;
+        int X = (x + 2) / 32;
+        int Y = (y + 2) / 32;
+        int X1 = (x + 22) / 32;
+        int Y1 = (y + 30) / 32;
         if (BombermanGame.map[Y].charAt(X) == 'B' || BombermanGame.map[Y].charAt(X1) == 'B'
                 || BombermanGame.map[Y1].charAt(X) == 'B' || BombermanGame.map[Y1].charAt(X1) == 'B') {
             check = true;
@@ -342,6 +353,7 @@ public class Bomber extends Entity {
     public void deadBomber() {
         if (isDead()) {
             if (time == 0) {
+                SoundEffects.play("AA126_11");
                 img = Sprite.player_dead1.getFxImage();
             }
             time ++;
@@ -352,7 +364,9 @@ public class Bomber extends Entity {
         else if (time == 10) {
             img = Sprite.player_dead3.getFxImage();
         }
-
+        else if (time ==15) {
+            SoundEffects.play("endgame3");
+        }
     }
 
     @Override

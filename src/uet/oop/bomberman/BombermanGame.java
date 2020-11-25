@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.getMap.GetMap;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.SoundEffects;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -22,7 +23,7 @@ public class BombermanGame extends Application {
     
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
-    public static String[] map = GetMap.getMap("res/levels/Level1.txt");
+    public static String[] map = GetMap.getMap("res/levels/Level2.txt");
 
     //di chuyen bomber
 
@@ -80,7 +81,9 @@ public class BombermanGame extends Application {
                 break;
                 case SPACE: {
                     Bomb bomb = new Bomb(bomberman.getX(), bomberman.getY(), Sprite.bomb.getFxImage());
-                    bombs.add(bomb);
+                    if (bombs.size() < bomberman.getNumOfBomb()) {
+                        bombs.add(bomb);
+                    }
                 }
             }
         });
@@ -105,6 +108,10 @@ public class BombermanGame extends Application {
                 update();
             }
         };
+
+        //sound effects
+        SoundEffects.play("soundtrack");
+
         timer.start();
 
         //createMap();
@@ -206,7 +213,7 @@ public class BombermanGame extends Application {
                     stillObjects.add(object);
                     object = new Brick(j, i, Sprite.brick.getFxImage());
                     bricks.add((Brick)object);
-                    object = new Bomb(j, i, Sprite.powerup_bombs.getFxImage());
+                    object = new BombItem(j, i, Sprite.powerup_bombs.getFxImage());
                     items.add((BombItem)object);
                     BombermanGame.map[i] = BombermanGame.map[i].substring(0, j) + "*" +
                             BombermanGame.map[i].substring(j+1, BombermanGame.map[i].length());
@@ -244,6 +251,9 @@ public class BombermanGame extends Application {
             }
         }
         for (int i = 0; i < enemies.size(); i ++) {
+            if (enemies.get(i).getTime() == 1) {
+                SoundEffects.play("AAA126_11");
+            }
             if (enemies.get(i).getTime() >= 5) {
                 enemies.remove(i);
                 i--;
@@ -252,6 +262,12 @@ public class BombermanGame extends Application {
         for (int i = 0; i < bricks.size(); i ++) {
             if (bricks.get(i).getTime() >= 20) {
                 bricks.remove(i);
+                i--;
+            }
+        }
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).isDead()) {
+                items.remove(i);
                 i--;
             }
         }

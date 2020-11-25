@@ -8,76 +8,70 @@ import java.util.Random;
 
 public class RedCoin extends CanDeadEntity {
     int ok = 0, ok1 = 0, ok2 = 0;
+    int speed = 1;
 
     public RedCoin(int x, int y, Image img) {
         super(x, y, img);
     }
 
-    @Override
-    public void deadMoment() {
-        if (dead == true) {
-            if (time == 0) {
-                img = Sprite.redcoin_dead.getFxImage();
-            }
-            time++;
-        }
-    }
-
     public void browse_row() {
         if (x >=0 && x <= 30*32) {
-            if ((BombermanGame.map[y/32].charAt(x /32 + 1) != '#'
-                    && BombermanGame.map[y/32].charAt(x /32 + 1) != '*') && ok == 0) {
-                x++;
-                if (x %30 == 0) {
+            if ((BombermanGame.map[y/32].charAt(x/32 + 1) != '#'
+                    && BombermanGame.map[y/32].charAt(x/32 + 1) != '*'
+                    && BombermanGame.map[y/32].charAt(x/32 + 1) != 'B') && ok == 0) {
+                x+=speed;
+                if (x%30 == 0) {
                     img = Sprite.redcoin_right1.getFxImage();
                 }
-                else if (x %30 == 10) {
+                else if (x%30 == 10) {
                     img = Sprite.redcoin_right2.getFxImage();
                 }
-                else if (x %30 == 20) {
+                else if (x%30 == 20) {
                     img = Sprite.redcoin_right3.getFxImage();
                 }
                 ok = 0;
             }
-            else if (BombermanGame.map[y/32].charAt(x /32 + 1) == '#'
-                    || BombermanGame.map[y/32].charAt(x /32 + 1) == '*' || ok == 1){
+            else if (BombermanGame.map[y/32].charAt(x/32 + 1) == '#'
+                    || BombermanGame.map[y/32].charAt(x/32 + 1) == '*'
+                    || BombermanGame.map[y/32].charAt(x/32 + 1) == 'B' || ok == 1){
                 if (ok == 0) {
-                    x--;
-                    if (x %30 == 0) {
+                    x-=speed;
+                    if (x%30 == 0) {
                         img = Sprite.redcoin_left1.getFxImage();
                     }
-                    else if (x %30 == 10) {
+                    else if (x%30 == 10) {
                         img = Sprite.redcoin_left2.getFxImage();
                     }
-                    else if (x %30 == 20) {
+                    else if (x%30 == 20) {
                         img = Sprite.redcoin_left3.getFxImage();
                     }
                     ok = 1;
                 }
                 else {
-                    if (BombermanGame.map[y/32].charAt((x -1)/32) == '#'
-                            || BombermanGame.map[y/32].charAt((x -1)/32) == '*') {
+                    if (BombermanGame.map[y/32].charAt((x-1)/32) == '#'
+                            || BombermanGame.map[y/32].charAt((x-1)/32) == '*'
+                            || BombermanGame.map[y/32].charAt((x-1)/32) == 'B') {
                         ok = 0;
-                        x++;
-                        if (x %30 == 0) {
+                        x+=speed;
+                        if (x%30 == 0) {
                             img = Sprite.redcoin_right1.getFxImage();
                         }
-                        else if (x %30 == 10) {
+                        else if (x%30 == 10) {
                             img = Sprite.redcoin_right2.getFxImage();
                         }
-                        else if (x %30 == 20) {
+                        else if (x%30 == 20) {
                             img = Sprite.redcoin_right3.getFxImage();
                         }
                     }
                     else {
-                        x--;
-                        if (x %30 == 0) {
+                        x-=speed;
+                        if (x%30 == 0) {
                             img = Sprite.redcoin_left1.getFxImage();
                         }
-                        else if (x %30 == 10) {
+                        else if (x%30 == 10) {
                             img = Sprite.redcoin_left2.getFxImage();
                         }
-                        else if (x %30 == 20) {
+                        else if (x%30 == 20) {
                             img = Sprite.redcoin_left3.getFxImage();
                         }
                     }
@@ -88,9 +82,10 @@ public class RedCoin extends CanDeadEntity {
 
     public void browse_column() {
         if (y >=0 && y <= 12*32) {
-            if ((BombermanGame.map[y/32+1].charAt(x /32) != '#'
-                    && BombermanGame.map[y/32+1].charAt(x /32) != '*') && ok1 == 0) {
-                y++;
+            if ((BombermanGame.map[y/32+1].charAt(x/32) != '#'
+                    && BombermanGame.map[y/32+1].charAt(x/32) != '*'
+                    && BombermanGame.map[y/32+1].charAt(x/32) != 'B') && ok1 == 0) {
+                y+=speed;
                 if (y%30 == 0) {
                     img = Sprite.redcoin_left1.getFxImage();
                 }
@@ -102,10 +97,11 @@ public class RedCoin extends CanDeadEntity {
                 }
                 ok1 = 0;
             }
-            else if (BombermanGame.map[y/32+1].charAt(x /32) == '#'
-                    || BombermanGame.map[y/32+1].charAt(x /32) == '*' || ok1 == 1){
+            else if (BombermanGame.map[y/32+1].charAt(x/32) == '#'
+                    || BombermanGame.map[y/32+1].charAt(x/32) == '*'
+                    || BombermanGame.map[y/32+1].charAt(x/32) == 'B'|| ok1 == 1){
                 if (ok1 == 0) {
-                    y--;
+                    y-=speed;
                     if (y%30 == 0) {
                         img = Sprite.redcoin_left1.getFxImage();
                     }
@@ -118,10 +114,11 @@ public class RedCoin extends CanDeadEntity {
                     ok1 = 1;
                 }
                 else {
-                    if (BombermanGame.map[(y-1)/32].charAt(x /32) == '#'
-                            || BombermanGame.map[(y-1)/32].charAt(x /32) == '*') {
+                    if (BombermanGame.map[(y-1)/32].charAt(x/32) == '#'
+                            || BombermanGame.map[(y-1)/32].charAt(x/32) == '*'
+                            || BombermanGame.map[(y-1)/32].charAt(x/32) == 'B') {
                         ok1 = 0;
-                        y++;
+                        y+=speed;
                         if (y%30 == 0) {
                             img = Sprite.redcoin_left1.getFxImage();
                         }
@@ -133,7 +130,7 @@ public class RedCoin extends CanDeadEntity {
                         }
                     }
                     else {
-                        y--;
+                        y-=speed;
                         if (y%30 == 0) {
                             img = Sprite.redcoin_left1.getFxImage();
                         }
@@ -151,25 +148,39 @@ public class RedCoin extends CanDeadEntity {
     }
 
     @Override
+    public void deadMoment() {
+        if (isDead()) {
+            if (time == 0) {
+                img = Sprite.redcoin_dead.getFxImage();
+            }
+            time++;
+        }
+    }
+
+    @Override
     public void update() {
         deadMoment();
-        if (dead == true) return;
+        if (isDead()) return;
         int value;
         Random rd = new Random();
         value = rd.nextInt(2) + 1;
         if (ok2 == 0) browse_row();
         if (ok2 == 1) browse_column();
-        if (y%32 == 0 && value == 2 && ((BombermanGame.map[y/32].charAt(x /32+1) != '#'
-                && BombermanGame.map[y/32].charAt(x /32+1) != '*')
-                || (BombermanGame.map[y/32].charAt((x -1)/32) != '#'
-                && BombermanGame.map[y/32].charAt((x -1)/32) != '*'))) {
+        if (y%32 == 0 && value == 2 && ((BombermanGame.map[y/32].charAt(x/32+1) != '#'
+                && BombermanGame.map[y/32].charAt(x/32+1) != '*'
+                && BombermanGame.map[y/32].charAt(x/32+1) != 'B')
+                || (BombermanGame.map[y/32].charAt((x-1)/32) != '#'
+                && BombermanGame.map[y/32].charAt((x-1)/32) != '*'
+                && BombermanGame.map[y/32].charAt((x-1)/32) != 'B'))) {
             ok2 = 0;
         }
 
-        if (x %32 == 0 && value == 1 && ((BombermanGame.map[y/32+1].charAt(x /32) != '#'
-                && BombermanGame.map[y/32+1].charAt(x /32) != '*')
-                || (BombermanGame.map[(y-1)/32].charAt(x /32) != '#'
-                && BombermanGame.map[(y-1)/32].charAt(x /32) != '*'))) {
+        if (x%32 == 0 && value == 1 && ((BombermanGame.map[y/32+1].charAt(x/32) != '#'
+                && BombermanGame.map[y/32+1].charAt(x/32) != '*'
+                && BombermanGame.map[y/32+1].charAt(x/32) != 'B')
+                || (BombermanGame.map[(y-1)/32].charAt(x/32) != '#'
+                && BombermanGame.map[(y-1)/32].charAt(x/32) != '*'
+                && BombermanGame.map[(y-1)/32].charAt(x/32) != 'B'))) {
             ok2 = 1;
         }
     }

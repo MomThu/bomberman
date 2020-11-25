@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="380.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.oop.bomberman.start.Controller">
+   <children>
+      <ImageView fitHeight="380.0" fitWidth="1000.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../res/start_image.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="173.0" layoutY="270.0" mnemonicParsing="false" onAction="#changeScene" prefHeight="50.0" prefWidth="150.0" styleClass="button1" stylesheets="@style.css" text="Play">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="414.0" layoutY="270.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="How To Play">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="661.0" layoutY="270.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="About Us">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
