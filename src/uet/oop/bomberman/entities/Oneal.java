@@ -178,6 +178,7 @@ public class Oneal extends CanDeadEntity {
     @Override
     public void update() {
         deadMoment();
+        if (isDead()) return;
         BFS bfs = new BFS();
         Point point2 = new Point(x/32, y/32);
         Point point1 = new Point(BombermanGame.bomberman.getX(), BombermanGame.bomberman.getY());

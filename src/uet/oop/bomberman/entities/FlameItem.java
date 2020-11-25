@@ -12,7 +12,7 @@ public class FlameItem extends Item {
         int X = x / 32;
         int Y = y / 32;
         int X1 = (bomber.x + 2) / 32;
-        int X2 = (bomber.x + 30) / 32;
+        int X2 = (bomber.x + 22) / 32;
         int Y1 = (bomber.y + 2) / 32;
         int Y2 = (bomber.y + 30) / 32;
         if ((X1 == X && Y1 == Y)
@@ -21,8 +21,9 @@ public class FlameItem extends Item {
                 || (X2 == X && Y2 == Y)) {
             this.setDead(true);
             this.setTime(0);
-            bomber.setSpeedX(bomber.getSpeedX() + 1);
-            bomber.setSpeedY(bomber.getSpeedY() + 1);
+            if (bomber.getBombSize() < 4) {
+                bomber.setBombSize(bomber.getBombSize() + 1);
+            }
         }
     }
 

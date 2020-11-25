@@ -40,7 +40,7 @@ public class Flame extends Entity{
         this.typeExplosion = typeExplosion;
     }
 
-    public void killObjects(List<CanDeadEntity> enemies, List<Brick> bricks) {
+    public void killObjects(List<CanDeadEntity> enemies, List<Brick> bricks ) {
         int X = x / 32;
         int Y = y / 32;
         for (CanDeadEntity entity: enemies) {

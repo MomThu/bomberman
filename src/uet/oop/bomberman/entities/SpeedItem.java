@@ -14,7 +14,7 @@ public class SpeedItem extends Item{
         int X = x / 32;
         int Y = y / 32;
         int X1 = (bomber.x + 2) / 32;
-        int X2 = (bomber.x + 30) / 32;
+        int X2 = (bomber.x + 22) / 32;
         int Y1 = (bomber.y + 2) / 32;
         int Y2 = (bomber.y + 30) / 32;
         if ((X1 == X && Y1 == Y)

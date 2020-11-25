@@ -4,8 +4,6 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.util.List;
-
 public class Brick extends CanDeadEntity{
 
     public Brick (int x, int y, Image img) {
@@ -28,7 +26,6 @@ public class Brick extends CanDeadEntity{
             int Y = y / 32;
             int X = x / 32;
             BombermanGame.map[Y] = BombermanGame.map[Y].substring(0, X) + " " + BombermanGame.map[Y].substring(X+1, BombermanGame.map[Y].length());
-
         }
     }
 

@@ -156,6 +156,7 @@ public class Kondoria extends CanDeadEntity{
     @Override
     public void update() {
         deadMoment();
+        if (isDead()) return;
         int value;
         Random rd = new Random();
         value = rd.nextInt(2) + 1;

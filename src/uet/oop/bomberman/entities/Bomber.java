@@ -1,16 +1,32 @@
 package uet.oop.bomberman.entities;
 
-import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.List;
 
 public class Bomber extends Entity {
+
+    private int bombSize = 1;
+
+    private int numOfBomb = 2;
+
+    public int getNumOfBomb() {
+        return numOfBomb;
+    }
+
+    public void setNumOfBomb(int numOfBomb) {
+        this.numOfBomb = numOfBomb;
+    }
+
+    public int getBombSize() {
+        return bombSize;
+    }
+
+    public void setBombSize(int bombSize) {
+        this.bombSize = bombSize;
+    }
 
     private boolean isDead;
 
@@ -32,13 +48,27 @@ public class Bomber extends Entity {
         this.time = time;
     }
 
-    private int speedX = 1;
+    private static int speedX = 1;
 
-    private int speedY = 1;
+    private static int speedY = 1;
 
     private int east, west, north, south;
 
+    public static int getSpeedX() {
+        return speedX;
+    }
 
+    public static int getSpeedY() {
+        return speedY;
+    }
+
+    public static void setSpeedX(int speedX) {
+        Bomber.speedX = speedX;
+    }
+
+    public static void setSpeedY(int speedY) {
+        Bomber.speedY = speedY;
+    }
 
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
@@ -52,39 +82,40 @@ public class Bomber extends Entity {
         return (y + 16) / 32;
     }
 
-    public int getSpeedX() {
-        return speedX;
-    }
-
-    public void setSpeedX(int speedX) {
-        this.speedX = speedX;
-    }
-
-    public int getSpeedY() {
-        return speedY;
-    }
-
-    public void setSpeedY(int speedY) {
-        this.speedY = speedY;
-    }
-
     public void gotoEast() {
         east++;
         west = 0;
         north = 0;
         south = 0;
+        boolean check = false;
+        int X = (x + 2) / 32;
+        int Y = (y + 2) / 32;
+        int X1 = (x + 22) / 32;
+        int Y1 = (y + 30) / 32;
+        if (BombermanGame.map[Y].charAt(X) == 'B' || BombermanGame.map[Y].charAt(X1) == 'B'
+                || BombermanGame.map[Y1].charAt(X) == 'B' || BombermanGame.map[Y1].charAt(X1) == 'B') {
+            check = true;
+        }
         x += speedX;
-        int X = (x + 24) / 32;
-        int Y = (y + 32) / 32;
+        X = (this.x + 24) / 32;
+        Y = (y + 32) / 32;
         boolean checkImage = false;
         if (y % 32 > 3 && y % 32 < 29) {
             if (BombermanGame.map[Y].charAt(X) == '#' || BombermanGame.map[Y].charAt(X) == '*') {
-                x = X * 32 - 24;
+                this.x = X * 32 - 24;
+                checkImage = true;
+            }
+            if (BombermanGame.map[Y].charAt(X) == 'B' && check == false) {
+                this.x = X * 32 - 24;
                 checkImage = true;
             }
             Y = y / 32;
             if (BombermanGame.map[Y].charAt(X) == '#' || BombermanGame.map[Y].charAt(X) == '*') {
-                x = X * 32 - 24;
+                this.x = X * 32 - 24;
+                checkImage = true;
+            }
+            if (BombermanGame.map[Y].charAt(X) == 'B' && check == false) {
+                this.x = X * 32 - 24;
                 checkImage = true;
             }
         } else {
@@ -95,7 +126,11 @@ public class Bomber extends Entity {
                 Y = y / 32;
             }
             if (BombermanGame.map[Y].charAt(X) == '#' || BombermanGame.map[Y].charAt(X) == '*') {
-                x = X * 32 -24;
+                this.x = X * 32 -24;
+                checkImage = true;
+            }
+            if (BombermanGame.map[Y].charAt(X) == 'B' && check == false) {
+                this.x = X * 32 - 24;
                 checkImage = true;
             }
         }
@@ -113,18 +148,35 @@ public class Bomber extends Entity {
         west++;
         north = 0;
         south = 0;
+        boolean check = false;
+        int X = (x + 2) / 32;
+        int Y = (y + 2) / 32;
+        int X1 = (x + 22) / 32;
+        int Y1 = (y + 30) / 32;
+        if (BombermanGame.map[Y].charAt(X) == 'B' || BombermanGame.map[Y].charAt(X1) == 'B'
+                || BombermanGame.map[Y1].charAt(X) == 'B' || BombermanGame.map[Y1].charAt(X1) == 'B') {
+            check = true;
+        }
         x -= speedX;
-        int X = x / 32;
-        int Y = (y + 32) / 32;
+        X = this.x / 32;
+        Y = (y + 32) / 32;
         boolean checkImage = false;
         if (y % 32 > 3 && y % 32 < 29) {
             if (BombermanGame.map[Y].charAt(X) == '#' || BombermanGame.map[Y].charAt(X) == '*') {
-                x = X * 32 + 32;
+                this.x = X * 32 + 32;
+                checkImage = true;
+            }
+            if (BombermanGame.map[Y].charAt(X) == 'B' && check == false) {
+                this.x = X * 32 + 32;
                 checkImage = true;
             }
             Y = y / 32;
             if (BombermanGame.map[Y].charAt(X) == '#' || BombermanGame.map[Y].charAt(X) == '*') {
-                x = X * 32 + 32;
+                this.x = X * 32 + 32;
+                checkImage = true;
+            }
+            if (BombermanGame.map[Y].charAt(X) == 'B' && check == false) {
+                this.x = X * 32 + 32;
                 checkImage = true;
             }
         } else {
@@ -135,7 +187,11 @@ public class Bomber extends Entity {
                 Y = y / 32;
             }
             if (BombermanGame.map[Y].charAt(X) == '#' || BombermanGame.map[Y].charAt(X) == '*') {
-                x = X * 32 + 32;
+                this.x = X * 32 + 32;
+                checkImage = true;
+            }
+            if (BombermanGame.map[Y].charAt(X) == 'B' && check == false) {
+                this.x = X * 32 + 32;
                 checkImage = true;
             }
         }
@@ -153,27 +209,48 @@ public class Bomber extends Entity {
         west = 0;
         north++;
         south = 0;
+        boolean check = false;
+        int X = (x + 2) / 32;
+        int Y = (y + 2) / 32;
+        int X1 = (x + 22) / 32;
+        int Y1 = (y + 30) / 32;
+        if (BombermanGame.map[Y].charAt(X) == 'B' || BombermanGame.map[Y].charAt(X1) == 'B'
+                || BombermanGame.map[Y1].charAt(X) == 'B' || BombermanGame.map[Y1].charAt(X1) == 'B') {
+            check = true;
+        }
         y -= speedY;
-        int X = x / 32;
-        int Y = y / 32;
+        X = this.x / 32;
+        Y = y / 32;
         boolean checkImage = false;
-        if (x % 32 > 3 && x % 32 < 29) {
+        if (this.x % 32 > 3 && this.x % 32 < 29) {
             if (BombermanGame.map[Y].charAt(X) == '#' || BombermanGame.map[Y].charAt(X) == '*') {
                 y = Y * 32 + 32;
                 checkImage = true;
             }
-            X = (x + 22) / 32;
+            if (BombermanGame.map[Y].charAt(X) == 'B' && check == false) {
+                y = Y * 32 + 32;
+                checkImage = true;
+            }
+            X = (this.x + 22) / 32;
             if (BombermanGame.map[Y].charAt(X) == '#' || BombermanGame.map[Y].charAt(X) == '*') {
+                y = Y * 32 + 32;
+                checkImage = true;
+            }
+            if (BombermanGame.map[Y].charAt(X) == 'B' && check == false) {
                 y = Y * 32 + 32;
                 checkImage = true;
             }
         } else {
-            if (x % 32 == 30 || x % 32 == 31 || x % 32 == 29){
-                X = x / 32 + 1;
+            if (this.x % 32 == 30 || this.x % 32 == 31 || this.x % 32 == 29){
+                X = this.x / 32 + 1;
             } else {
-                X = x / 32;
+                X = this.x / 32;
             }
             if (BombermanGame.map[Y].charAt(X) == '#' || BombermanGame.map[Y].charAt(X) == '*') {
+                y = Y * 32 + 32;
+                checkImage = true;
+            }
+            if (BombermanGame.map[Y].charAt(X) == 'B' && check == false) {
                 y = Y * 32 + 32;
                 checkImage = true;
             }
@@ -192,27 +269,48 @@ public class Bomber extends Entity {
         west = 0;
         north = 0;
         south++;
+        boolean check = false;
+        int X = (x + 2) / 32;
+        int Y = (y + 2) / 32;
+        int X1 = (x + 22) / 32;
+        int Y1 = (y + 30) / 32;
+        if (BombermanGame.map[Y].charAt(X) == 'B' || BombermanGame.map[Y].charAt(X1) == 'B'
+                || BombermanGame.map[Y1].charAt(X) == 'B' || BombermanGame.map[Y1].charAt(X1) == 'B') {
+            check = true;
+        }
         y += speedY;
-        int X = (x + 22) / 32;
-        int Y = (y + 32) / 32;
+        X = (this.x + 22) / 32;
+        Y = (y + 32) / 32;
         boolean checkImage = false;
-        if (x % 32 > 3 && x % 32 < 29) {
+        if (this.x % 32 > 3 && this.x % 32 < 29) {
             if (BombermanGame.map[Y].charAt(X) == '#' || BombermanGame.map[Y].charAt(X) == '*') {
                 y = Y * 32 - 32;
                 checkImage = true;
             }
-            X = x / 32;
+            if (BombermanGame.map[Y].charAt(X) == 'B' && check == false) {
+                y = Y * 32 - 32;
+                checkImage = true;
+            }
+            X = this.x / 32;
             if (BombermanGame.map[Y].charAt(X) == '#' || BombermanGame.map[Y].charAt(X) == '*') {
+                y = Y * 32 - 32;
+                checkImage = true;
+            }
+            if (BombermanGame.map[Y].charAt(X) == 'B' && check == false) {
                 y = Y * 32 - 32;
                 checkImage = true;
             }
         } else {
-            if (x % 32 == 30 || x % 32 == 31 || x % 32 == 29){
-                X = x / 32 + 1;
+            if (this.x % 32 == 30 || this.x % 32 == 31 || this.x % 32 == 29){
+                X = this.x / 32 + 1;
             } else {
-                X = x / 32;
+                X = this.x / 32;
             }
             if (BombermanGame.map[Y].charAt(X) == '#' || BombermanGame.map[Y].charAt(X) == '*') {
+                y = Y * 32 - 32;
+                checkImage = true;
+            }
+            if (BombermanGame.map[Y].charAt(X) == 'B' && check == false) {
                 y = Y * 32 - 32;
                 checkImage = true;
             }
@@ -241,10 +339,10 @@ public class Bomber extends Entity {
             }
         }
         for (CanDeadEntity entity: enemies) {
-            if ((entity.get_x() == X1 && entity.get_y() == Y1)
-                    || (entity.get_x() == X1 && entity.get_y() == Y2)
-                    || (entity.get_x() == X2 && entity.get_y() == Y1)
-                    || (entity.get_x() == X2 && entity.get_y() == Y2)) {
+            if (((entity.get_x() / 32) == X1 && entity.get_y() / 32 == Y1)
+                    || (entity.get_x() / 32 == X1 && entity.get_y() / 32 == Y2)
+                    || (entity.get_x() / 32 == X2 && entity.get_y() / 32 == Y1)
+                    || (entity.get_x() / 32 == X2 && entity.get_y() / 32 == Y2)) {
                 setDead(true);
                 setTime(0);
             }
@@ -270,6 +368,7 @@ public class Bomber extends Entity {
     @Override
     public void update() {
         deadBomber();
+        if (isDead) return;
         if (BombermanGame.gotoEast) {
             gotoEast();
         } else if (BombermanGame.gotoWest) {
