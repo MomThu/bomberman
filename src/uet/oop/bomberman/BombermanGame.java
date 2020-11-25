@@ -22,7 +22,7 @@ public class BombermanGame extends Application {
     
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
-    public static String[] map = GetMap.getMap("res/levels/Level1.txt");
+    public static String[] map = GetMap.getMap("res/levels/Level2.txt");
 
     //di chuyen bomber
 
@@ -149,13 +149,13 @@ public class BombermanGame extends Application {
                     bricks.add((Brick)object);
                     object = new Portal(j, i, Sprite.portal.getFxImage());
                     portals.add((Portal)object);
+                    BombermanGame.map[i] = BombermanGame.map[i].substring(0, j) + "*" +
+                            BombermanGame.map[i].substring(j+1, BombermanGame.map[i].length());
                 }
                 else if (map[i].charAt(j) == 'p') {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     stillObjects.add(object);
                     bomberman = new Bomber(j, i, Sprite.player_right.getFxImage());
-                    BombermanGame.map[i] = BombermanGame.map[i].substring(0, j) + "*" +
-                            BombermanGame.map[i].substring(j+1, BombermanGame.map[i].length());
                 }
                 else if (map[i].charAt(j) == '1') {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
@@ -180,6 +180,12 @@ public class BombermanGame extends Application {
                     stillObjects.add(object);
                     object = new RedCoin(j, i, Sprite.redcoin_left1.getFxImage());
                     enemies.add((RedCoin)object);
+                }
+                else if (map[i].charAt(j) == '5') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new OrangeCoin(j, i, Sprite.orangecoin_left1.getFxImage());
+                    enemies.add((OrangeCoin)object);
                 }
                 else if (map[i].charAt(j) == 's') {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
@@ -234,7 +240,7 @@ public class BombermanGame extends Application {
         }
         for (int i = 0; i < flames.size(); i ++) {
             if (flames.get(i).getTime() == 0) {
-                flames.get(i).killObjects(canDeadObjects);
+                flames.get(i).killObjects(enemies, bricks);
             }
             if (flames.get(i).getTime() >= 15) {
                 flames.remove(i);

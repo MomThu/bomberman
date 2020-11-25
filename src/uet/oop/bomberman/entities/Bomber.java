@@ -32,27 +32,13 @@ public class Bomber extends Entity {
         this.time = time;
     }
 
-    private static int speedX = 1;
+    private int speedX = 1;
 
-    private static int speedY = 1;
+    private int speedY = 1;
 
     private int east, west, north, south;
 
-    public static int getSpeedX() {
-        return speedX;
-    }
 
-    public static int getSpeedY() {
-        return speedY;
-    }
-
-    public static void setSpeedX(int speedX) {
-        Bomber.speedX = speedX;
-    }
-
-    public static void setSpeedY(int speedY) {
-        Bomber.speedY = speedY;
-    }
 
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
@@ -64,6 +50,22 @@ public class Bomber extends Entity {
 
     public int getY() {
         return (y + 16) / 32;
+    }
+
+    public int getSpeedX() {
+        return speedX;
+    }
+
+    public void setSpeedX(int speedX) {
+        this.speedX = speedX;
+    }
+
+    public int getSpeedY() {
+        return speedY;
+    }
+
+    public void setSpeedY(int speedY) {
+        this.speedY = speedY;
     }
 
     public void gotoEast() {

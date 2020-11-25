@@ -8,16 +8,13 @@ import java.util.List;
 
 public class Brick extends CanDeadEntity{
 
-    private boolean isDead;
-    private int time  = 0;
-
     public Brick (int x, int y, Image img) {
         super(x, y, img);
     }
 
     @Override
     public void deadMoment() {
-        if (isDead) {
+        if (isDead()) {
             if (time == 0) {
                 img = Sprite.brick_exploded.getFxImage();
             }
