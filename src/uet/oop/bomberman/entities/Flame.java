@@ -40,20 +40,28 @@ public class Flame extends Entity{
         this.typeExplosion = typeExplosion;
     }
 
-    public void killObjects(List<CanDeadEntity> canDeadObjects) {
+    public void killObjects(List<CanDeadEntity> enemies, List<Brick> bricks ) {
         int X = x / 32;
         int Y = y / 32;
-        for (CanDeadEntity entity: canDeadObjects) {
-            int X1 = entity.x / 32;
-            int X2 = (entity.x + 32) / 32;
-            int Y1 = entity.y / 32;
-            int Y2 = (entity.y + 32) / 32;
+        for (CanDeadEntity entity: enemies) {
+            int X1 = (entity.x + 2) / 32;
+            int X2 = (entity.x + 30) / 32;
+            int Y1 = (entity.y + 2) / 32;
+            int Y2 = (entity.y + 30) / 32;
             if ((X1 == X && Y1 == Y)
                     || (X1 == X && Y2 == Y)
                     || (X2 == X && Y1 == Y)
                     || (X2 == X && Y2 == Y)) {
                 entity.setDead(true);
                 entity.setTime(0);
+            }
+        }
+        for (Brick brick: bricks) {
+            int X1 = brick.x / 32;
+            int Y1 = brick.y / 32;
+            if (X1 == X && Y1 == Y) {
+                brick.setDead(true);
+                brick.setTime(0);
             }
         }
     }

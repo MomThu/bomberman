@@ -24,8 +24,8 @@ public class Bomb extends Entity {
     }
 
 
-    public List<Flame> createFlame() {
-        List<Flame> newFlames = new ArrayList<>();
+    public List<Flame> createFlame(Bomber bomber, List<Brick> bricks) {
+        /**List<Flame> newFlames = new ArrayList<>();
         int X = (x + 16) / 32;
         int Y = (y + 16) / 32;
         int X1 = X - 1;
@@ -52,12 +52,98 @@ public class Bomb extends Entity {
         } else if (time >= 135) {
             newFlames.clear();
         }
+        return newFlames;*/
+        List<Flame> newFlames = new ArrayList<>();
+        int X = this.get_x() / Sprite.SCALED_SIZE;
+        int Y = this.get_y() / Sprite.SCALED_SIZE;
+        int lengthOfBoom = bomber.getBombSize();
+        for (int i = X + 1; i <= X + lengthOfBoom; ++i) {
+            if (BombermanGame.map[Y].charAt(i) == '#') {
+                break;
+            }
+            if (BombermanGame.map[Y].charAt(i) == '*') {
+                Flame boomExploded = new Flame(i, Y, Sprite.explosion_horizontal_right_last.getFxImage(), "horizontal_right");
+                newFlames.add(boomExploded);
+                break;
+            }
+            if ((i < X + lengthOfBoom && BombermanGame.map[Y].charAt(i + 1) == '#')
+                    || (i == X + lengthOfBoom)) {
+                Flame boomExploded = new Flame(i, Y, Sprite.explosion_horizontal_right_last.getFxImage(), "horizontal_right");
+                newFlames.add(boomExploded);
+                break;
+            }
+            Flame boomExploded = new Flame(i, Y, Sprite.explosion_horizontal.getFxImage(), "horizontal");
+            newFlames.add(boomExploded);
+        }
+        for (int i = X - 1; i >= X - lengthOfBoom; --i) {
+            if (BombermanGame.map[Y].charAt(i) == '#') {
+                break;
+            }
+            if (BombermanGame.map[Y].charAt(i) == '*') {
+                Flame boomExploded = new Flame(i, Y, Sprite.explosion_horizontal_right_last.getFxImage(), "horizontal_left");
+                newFlames.add(boomExploded);
+                break;
+            }
+            if ((i > X - lengthOfBoom && BombermanGame.map[Y].charAt(i - 1) == '#')
+                    || (i == X - lengthOfBoom)) {
+                Flame boomExploded = new Flame(i, Y, Sprite.explosion_horizontal_left_last.getFxImage(), "horizontal_left");
+                newFlames.add(boomExploded);
+                break;
+            }
+            Flame boomExploded = new Flame(i, Y, Sprite.explosion_horizontal.getFxImage(), "horizontal");
+            newFlames.add(boomExploded);
+        }
+        for (int j = Y + 1; j <= Y + lengthOfBoom; ++j) {
+            if (BombermanGame.map[j].charAt(X) == '#') {
+                break;
+            }
+            if (BombermanGame.map[j].charAt(X) == '*') {
+                Flame boomExploded = new Flame(X, j, Sprite.explosion_vertical_down_last.getFxImage(), "vertical_down");
+                newFlames.add(boomExploded);
+                break;
+            }
+            if ((j < Y + lengthOfBoom && BombermanGame.map[j + 1].charAt(X) == '#')
+                    || j == Y + lengthOfBoom) {
+                Flame boomExploded = new Flame(X, j, Sprite.explosion_vertical_down_last.getFxImage(), "vertical_down");
+                newFlames.add(boomExploded);
+                break;
+            }
+            Flame boomExploded = new Flame(X, j, Sprite.explosion_vertical.getFxImage(), "vertical");
+            newFlames.add(boomExploded);
+        }
+        for (int j = Y - 1; j >= Y - lengthOfBoom; --j) {
+            if (BombermanGame.map[j].charAt(X) == '#') {
+                break;
+            }
+            if (BombermanGame.map[j].charAt(X) == '*') {
+                Flame boomExploded = new Flame(X, j, Sprite.explosion_vertical_top_last.getFxImage(), "vertical_top");
+                newFlames.add(boomExploded);
+                break;
+            }
+            if ((j > Y - lengthOfBoom && BombermanGame.map[j - 1].charAt(X) == '#')
+                    || j == Y - lengthOfBoom) {
+                Flame boomExploded = new Flame(X, j, Sprite.explosion_vertical_top_last.getFxImage(), "vertical_top");
+                newFlames.add(boomExploded);
+                break;
+            }
+            Flame boomExploded = new Flame(X, j, Sprite.explosion_vertical.getFxImage(), "vertical");
+            newFlames.add(boomExploded);
+        }
         return newFlames;
     }
 
     @Override
     public void update() {
-        createFlame();
+        if (time == 0) {
+            int X = x / 32;
+            int Y = y / 32;
+            BombermanGame.map[Y] = BombermanGame.map[Y].substring(0, X) + "B" + BombermanGame.map[Y].substring(X + 1);
+        }
+        if (time == 134) {
+            int X = x / 32;
+            int Y = y / 32;
+            BombermanGame.map[Y] = BombermanGame.map[Y].substring(0, X) + "B" + BombermanGame.map[Y].substring(X + 1);
+        }
         time ++;
         if (time >= 130) {
             img = Sprite.bomb_exploded2.getFxImage();

@@ -6,20 +6,21 @@ import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.Random;
 
-public class Balloom extends CanDeadEntity {
+public class RedCoin extends CanDeadEntity {
     int ok = 0, ok1 = 0, ok2 = 0;
-    int vt1 = 0, vt2 = 0;
 
-    public Balloom(int x, int y, Image img) {
+    public RedCoin(int x, int y, Image img) {
         super(x, y, img);
     }
 
-    public int getX() {
-        return x / 32;
-    }
-
-    public int getY() {
-        return y / 32;
+    @Override
+    public void deadMoment() {
+        if (dead == true) {
+            if (time == 0) {
+                img = Sprite.redcoin_dead.getFxImage();
+            }
+            time++;
+        }
     }
 
     public void browse_row() {
@@ -28,61 +29,56 @@ public class Balloom extends CanDeadEntity {
                     && BombermanGame.map[y/32].charAt(x /32 + 1) != '*') && ok == 0) {
                 x++;
                 if (x %30 == 0) {
-                    img = Sprite.balloom_right1.getFxImage();
+                    img = Sprite.redcoin_right1.getFxImage();
                 }
                 else if (x %30 == 10) {
-                    img = Sprite.balloom_right2.getFxImage();
+                    img = Sprite.redcoin_right2.getFxImage();
                 }
                 else if (x %30 == 20) {
-                    img = Sprite.balloom_right3.getFxImage();
+                    img = Sprite.redcoin_right3.getFxImage();
                 }
                 ok = 0;
             }
             else if (BombermanGame.map[y/32].charAt(x /32 + 1) == '#'
                     || BombermanGame.map[y/32].charAt(x /32 + 1) == '*' || ok == 1){
-                if (BombermanGame.map[y/32].charAt(x /32 + 1) == '#'
-                        || BombermanGame.map[y/32].charAt(x /32 + 1) == '*') {
-                    vt1 = x;
-                }
                 if (ok == 0) {
                     x--;
                     if (x %30 == 0) {
-                        img = Sprite.balloom_left1.getFxImage();
+                        img = Sprite.redcoin_left1.getFxImage();
                     }
                     else if (x %30 == 10) {
-                        img = Sprite.balloom_left2.getFxImage();
+                        img = Sprite.redcoin_left2.getFxImage();
                     }
                     else if (x %30 == 20) {
-                        img = Sprite.balloom_left3.getFxImage();
+                        img = Sprite.redcoin_left3.getFxImage();
                     }
                     ok = 1;
                 }
                 else {
                     if (BombermanGame.map[y/32].charAt((x -1)/32) == '#'
                             || BombermanGame.map[y/32].charAt((x -1)/32) == '*') {
-                        vt2 = x;
                         ok = 0;
                         x++;
                         if (x %30 == 0) {
-                            img = Sprite.balloom_right1.getFxImage();
+                            img = Sprite.redcoin_right1.getFxImage();
                         }
                         else if (x %30 == 10) {
-                            img = Sprite.balloom_right2.getFxImage();
+                            img = Sprite.redcoin_right2.getFxImage();
                         }
                         else if (x %30 == 20) {
-                            img = Sprite.balloom_right3.getFxImage();
+                            img = Sprite.redcoin_right3.getFxImage();
                         }
                     }
                     else {
                         x--;
                         if (x %30 == 0) {
-                            img = Sprite.balloom_left1.getFxImage();
+                            img = Sprite.redcoin_left1.getFxImage();
                         }
                         else if (x %30 == 10) {
-                            img = Sprite.balloom_left2.getFxImage();
+                            img = Sprite.redcoin_left2.getFxImage();
                         }
                         else if (x %30 == 20) {
-                            img = Sprite.balloom_left3.getFxImage();
+                            img = Sprite.redcoin_left3.getFxImage();
                         }
                     }
                 }
@@ -96,13 +92,13 @@ public class Balloom extends CanDeadEntity {
                     && BombermanGame.map[y/32+1].charAt(x /32) != '*') && ok1 == 0) {
                 y++;
                 if (y%30 == 0) {
-                    img = Sprite.balloom_left1.getFxImage();
+                    img = Sprite.redcoin_left1.getFxImage();
                 }
                 else if (y%30 == 10) {
-                    img = Sprite.balloom_left2.getFxImage();
+                    img = Sprite.redcoin_left2.getFxImage();
                 }
                 else if (y%30 == 20) {
-                    img = Sprite.balloom_left3.getFxImage();
+                    img = Sprite.redcoin_left3.getFxImage();
                 }
                 ok1 = 0;
             }
@@ -111,42 +107,41 @@ public class Balloom extends CanDeadEntity {
                 if (ok1 == 0) {
                     y--;
                     if (y%30 == 0) {
-                        img = Sprite.balloom_left1.getFxImage();
+                        img = Sprite.redcoin_left1.getFxImage();
                     }
                     else if (y%30 == 10) {
-                        img = Sprite.balloom_left2.getFxImage();
+                        img = Sprite.redcoin_left2.getFxImage();
                     }
                     else if (y%30 == 20) {
-                        img = Sprite.balloom_left3.getFxImage();
+                        img = Sprite.redcoin_left3.getFxImage();
                     }
                     ok1 = 1;
                 }
                 else {
                     if (BombermanGame.map[(y-1)/32].charAt(x /32) == '#'
                             || BombermanGame.map[(y-1)/32].charAt(x /32) == '*') {
-                        //vt2 = x;
                         ok1 = 0;
                         y++;
                         if (y%30 == 0) {
-                            img = Sprite.balloom_left1.getFxImage();
+                            img = Sprite.redcoin_left1.getFxImage();
                         }
                         else if (y%30 == 10) {
-                            img = Sprite.balloom_left2.getFxImage();
+                            img = Sprite.redcoin_left2.getFxImage();
                         }
                         else if (y%30 == 20) {
-                            img = Sprite.balloom_left3.getFxImage();
+                            img = Sprite.redcoin_left3.getFxImage();
                         }
                     }
                     else {
                         y--;
                         if (y%30 == 0) {
-                            img = Sprite.balloom_left1.getFxImage();
+                            img = Sprite.redcoin_left1.getFxImage();
                         }
                         else if (y%30 == 10) {
-                            img = Sprite.balloom_left2.getFxImage();
+                            img = Sprite.redcoin_left2.getFxImage();
                         }
                         else if (y%30 == 20) {
-                            img = Sprite.balloom_left3.getFxImage();
+                            img = Sprite.redcoin_left3.getFxImage();
                         }
                     }
                 }
@@ -156,19 +151,9 @@ public class Balloom extends CanDeadEntity {
     }
 
     @Override
-    public void deadMoment() {
-        if (isDead()) {
-            if (time == 0) {
-                img = Sprite.balloom_dead.getFxImage();
-            }
-            time ++;
-        }
-    }
-
-    @Override
     public void update() {
         deadMoment();
-        if (isDead()) return;
+        if (dead == true) return;
         int value;
         Random rd = new Random();
         value = rd.nextInt(2) + 1;
