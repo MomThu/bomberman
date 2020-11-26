@@ -114,16 +114,16 @@ public class Bomb extends Entity {
             BombermanGame.map[Y] = BombermanGame.map[Y].substring(0, X) + "B" + BombermanGame.map[Y].substring(X + 1);
         }
 
-        if (time == 134) {
+        if (time == 194) {
             int X = x / 32;
             int Y = y / 32;
             BombermanGame.map[Y] = BombermanGame.map[Y].substring(0, X) + " " + BombermanGame.map[Y].substring(X + 1);
         }
         time ++;
-        if (time >= 130) {
+        if (time >= 190) {
             img = Sprite.bomb_exploded2.getFxImage();
         }
-        else if ( time >= 125) {
+        else if ( time >= 185) {
             img = Sprite.bomb_exploded1.getFxImage();
             SoundEffects.play("BOM_11_M");
         }

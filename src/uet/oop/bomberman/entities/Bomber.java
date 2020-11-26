@@ -49,26 +49,26 @@ public class Bomber extends Entity {
         this.time = time;
     }
 
-    private static int speedX = 1;
+    private int speedX = 1;
 
-    private static int speedY = 1;
+    private int speedY = 1;
 
     private int east, west, north, south;
 
-    public static int getSpeedX() {
+    public int getSpeedX() {
         return speedX;
     }
 
-    public static int getSpeedY() {
+    public int getSpeedY() {
         return speedY;
     }
 
-    public static void setSpeedX(int speedX) {
-        Bomber.speedX = speedX;
+    public void setSpeedX(int speedX) {
+        this.speedX = speedX;
     }
 
-    public static void setSpeedY(int speedY) {
-        Bomber.speedY = speedY;
+    public void setSpeedY(int speedY) {
+        this.speedY = speedY;
     }
 
     public Bomber(int x, int y, Image img) {
@@ -82,6 +82,19 @@ public class Bomber extends Entity {
     public int getY() {
         return (y + 16) / 32;
     }
+
+    public void set_X(int x) {
+        this.x = x;
+    }
+
+    public void set_Y(int y) {
+        this.y = y;
+    }
+
+    public void set_Img(Image img) {
+        this.img = img;
+    }
+
 
     public void gotoEast() {
         east++;
@@ -328,13 +341,12 @@ public class Bomber extends Entity {
     public void collideToDead(List<Flame> flames, List<CanDeadEntity> enemies) {
         int X1 = (x + 3) / 32;
         int Y1 = (y + 3) / 32;
-        int X2 = (x + 24) / 32;
-        int Y2 = (y + 32) / 32;
+        int X2 = (x + 21) / 32;
+        int Y2 = (y + 29) / 32;
+        int X3 = (x + 12) / 32;
+        int Y3 = (y + 16) / 32;
         for (Flame flame: flames) {
-            if ((flame.getX() == X1 && flame.getY() == Y1)
-                    || (flame.getX() == X1 && flame.getY() == Y2)
-                    || (flame.getX() == X2 && flame.getY() == Y1)
-                    || (flame.getX() == X2 && flame.getY() == Y2)) {
+            if (flame.getX() == X3 && flame.getY() == Y3) {
                 setDead(true);
                 setTime(0);
             }

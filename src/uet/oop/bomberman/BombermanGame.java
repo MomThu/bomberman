@@ -23,6 +23,8 @@ public class BombermanGame extends Application {
     
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
+    public static int level = 2;
+    public static int heart = 3;
     public static String[] map = GetMap.getMap("res/levels/Level2.txt");
 
     //di chuyen bomber
@@ -47,9 +49,9 @@ public class BombermanGame extends Application {
     private List<CanDeadEntity> enemies = new ArrayList<>();
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Application.launch(BombermanGame.class);
-    }
+    }*/
 
     @Override
     public void start(Stage stage) {
@@ -218,6 +220,16 @@ public class BombermanGame extends Application {
                     BombermanGame.map[i] = BombermanGame.map[i].substring(0, j) + "*" +
                             BombermanGame.map[i].substring(j+1, BombermanGame.map[i].length());
                 }
+                else if (map[i].charAt(j) == 'h') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new Brick(j, i, Sprite.brick.getFxImage());
+                    bricks.add((Brick)object);
+                    object = new DetonatorItem(j, i, Sprite.powerup_detonator.getFxImage());
+                    items.add((DetonatorItem)object);
+                    BombermanGame.map[i] = BombermanGame.map[i].substring(0, j) + "*" +
+                            BombermanGame.map[i].substring(j+1, BombermanGame.map[i].length());
+                }
                 else {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     stillObjects.add(object);
@@ -229,14 +241,14 @@ public class BombermanGame extends Application {
 
     public void updateBomb() {
         for (int i = 0; i< bombs.size(); i++) {
-            if (bombs.get(i).getTime() == 120) {
+            if (bombs.get(i).getTime() == 180) {
                 List<Flame> newFlames = bombs.get(i).createFlame(bomberman, bricks);
                 for (Flame flame : newFlames) {
                     flames.add(flame);
                     //flame.killObjects(canDeadObjects);
                 }
             }
-            if (bombs.get(i).getTime() >= 135) {
+            if (bombs.get(i).getTime() >= 195) {
                 bombs.remove(i);
                 i--;
             }
@@ -254,7 +266,7 @@ public class BombermanGame extends Application {
             if (enemies.get(i).getTime() == 1) {
                 SoundEffects.play("AAA126_11");
             }
-            if (enemies.get(i).getTime() >= 5) {
+            if (enemies.get(i).getTime() >= 20) {
                 enemies.remove(i);
                 i--;
             }
@@ -271,7 +283,33 @@ public class BombermanGame extends Application {
                 i--;
             }
         }
+        for (int i = 0; i < portals.size(); i++) {
+            if (portals.get(i).goToNewLevel(bomberman) == level && enemies.size() == 0) {
+                clear();
+                map = GetMap.getMap("res/levels/Level"+ level + ".txt");
+                loadMap();
+            }
+        }
+        if (bomberman.isDead() && heart >= 1 && bomberman.getTime() > 20) {
+            bomberman.set_X(32);
+            bomberman.set_Y(32);
+            bomberman.set_Img(Sprite.player_right.getFxImage());
+            bomberman.setDead(false);
+            bomberman.setTime(0);
+            heart--;
+        }
         bomberman.collideToDead(flames, enemies);
+    }
+
+    public void clear() {
+        entities.clear();
+        stillObjects.clear();
+        bombs.clear();
+        flames.clear();
+        bricks.clear();
+        portals.clear();
+        items.clear();
+        enemies.clear();
     }
 
     public void update() {
