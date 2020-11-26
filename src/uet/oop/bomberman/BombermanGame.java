@@ -1,5 +1,6 @@
 package uet.oop.bomberman;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -22,7 +23,9 @@ public class BombermanGame extends Application {
     
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
-    public static String[] map = GetMap.getMap("res/levels/Level2.txt");
+    public static int level = 1;
+    public static int heart = 3;
+    public static String[] map = GetMap.getMap("res/levels/Level1.txt");
 
     //di chuyen bomber
 
@@ -109,7 +112,6 @@ public class BombermanGame extends Application {
         };
         timer.start();
 
-        //createMap();
         loadMap();
 
         bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
@@ -247,6 +249,11 @@ public class BombermanGame extends Application {
         }
         for (int i = 0; i < enemies.size(); i ++) {
             if (enemies.get(i).getTime() >= 5) {
+                if (enemies.get(i) instanceof RedCoin) {
+                    OrangeCoin orangeCoin = new OrangeCoin(enemies.get(i).get_x() / 32,
+                            enemies.get(i).get_y() / 32, Sprite.orangecoin_left1.getFxImage());
+                    enemies.add(orangeCoin);
+                }
                 enemies.remove(i);
                 i--;
             }
@@ -263,7 +270,33 @@ public class BombermanGame extends Application {
                 i--;
             }
         }
+        for (int i = 0; i < portals.size(); i++) {
+            if (portals.get(i).goToNewLevel(bomberman) == level && enemies.size() == 0) {
+                clear();
+                map = GetMap.getMap("res/levels/Level"+ level + ".txt");
+                loadMap();
+            }
+        }
+        if (bomberman.isDead() && heart >= 1 && bomberman.getTime() > 20) {
+            bomberman.set_X(32);
+            bomberman.set_Y(32);
+            bomberman.set_Img(Sprite.player_right.getFxImage());
+            bomberman.setDead(false);
+            bomberman.setTime(0);
+            heart--;
+        }
         bomberman.collideToDead(flames, enemies);
+    }
+
+    public void clear() {
+        entities.clear();
+        stillObjects.clear();
+        bombs.clear();
+        flames.clear();
+        bricks.clear();
+        portals.clear();
+        items.clear();
+        enemies.clear();
     }
 
     public void update() {

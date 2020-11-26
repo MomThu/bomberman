@@ -82,6 +82,18 @@ public class Bomber extends Entity {
         return (y + 16) / 32;
     }
 
+    public void set_X(int x) {
+        this.x = x;
+    }
+
+    public void set_Y(int y) {
+        this.y = y;
+    }
+
+    public void set_Img(Image img) {
+        this.img = img;
+    }
+
     public void gotoEast() {
         east++;
         west = 0;
