@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.sound.SoundEffects;
 
 public class DetonatorItem extends Item {
     public DetonatorItem (int x, int y, Image img) {
@@ -30,6 +31,11 @@ public class DetonatorItem extends Item {
     @Override
     public void update() {
         collectItem(BombermanGame.bomberman);
+        if (isDead()) {
+            if (time == 0) {
+                SoundEffects.play("Item");
+            }
+        }
     }
 
     @Override

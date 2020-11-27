@@ -30,13 +30,12 @@ public class BombItem extends Item {
 
     @Override
     public void update() {
+        collectItem(BombermanGame.bomberman);
         if (isDead()) {
             if (time == 0) {
                 SoundEffects.play("Item");
             }
         }
-
-        collectItem(BombermanGame.bomberman);
     }
 
     @Override

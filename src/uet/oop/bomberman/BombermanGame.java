@@ -255,7 +255,7 @@ public class BombermanGame extends Application {
         }
         for (int i = 0; i < flames.size(); i ++) {
             if (flames.get(i).getTime() == 0) {
-                flames.get(i).killObjects(enemies,bricks);
+                flames.get(i).killObjects(enemies,bricks,bombs);
             }
             if (flames.get(i).getTime() >= 15) {
                 flames.remove(i);
@@ -264,7 +264,7 @@ public class BombermanGame extends Application {
         }
         for (int i = 0; i < enemies.size(); i ++) {
             if (enemies.get(i).getTime() == 1) {
-                SoundEffects.play("AAA126_11");
+                SoundEffects.play("AA126_11");
             }
             if (enemies.get(i).getTime() >= 20) {
                 if (enemies.get(i) instanceof RedCoin) {

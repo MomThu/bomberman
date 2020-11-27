@@ -40,7 +40,7 @@ public class Flame extends Entity{
         this.typeExplosion = typeExplosion;
     }
 
-    public void killObjects(List<CanDeadEntity> enemies, List<Brick> bricks ) {
+    public void killObjects(List<CanDeadEntity> enemies, List<Brick> bricks, List<Bomb> bombs ) {
         int X = x / 32;
         int Y = y / 32;
         for (CanDeadEntity entity: enemies) {
@@ -62,6 +62,13 @@ public class Flame extends Entity{
             if (X1 == X && Y1 == Y) {
                 brick.setDead(true);
                 brick.setTime(0);
+            }
+        }
+        for (Bomb bomb: bombs) {
+            int X1 = bomb.x / 32;
+            int Y1 = bomb.y / 32;
+            if ((X1 == X && Y1 == Y) && bomb.getTime() < 179) {
+                bomb.setTime(179);
             }
         }
     }
