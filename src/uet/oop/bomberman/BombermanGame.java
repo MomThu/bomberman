@@ -267,6 +267,11 @@ public class BombermanGame extends Application {
                 SoundEffects.play("AAA126_11");
             }
             if (enemies.get(i).getTime() >= 20) {
+                if (enemies.get(i) instanceof RedCoin) {
+                    OrangeCoin orangeCoin = new OrangeCoin(enemies.get(i).get_x() / 32,
+                            enemies.get(i).get_y() / 32, Sprite.orangecoin_left1.getFxImage());
+                    enemies.add(orangeCoin);
+                }
                 enemies.remove(i);
                 i--;
             }
@@ -291,8 +296,14 @@ public class BombermanGame extends Application {
             }
         }
         if (bomberman.isDead() && heart >= 1 && bomberman.getTime() > 20) {
-            bomberman.set_X(32);
-            bomberman.set_Y(32);
+            for (int i = 0; i < map.length; i++) {
+                for  (int j = 0; j < map[i].length(); j++) {
+                    if (map[i].charAt(j) == 'p') {
+                        bomberman.set_X(Sprite.SCALED_SIZE * j);
+                        bomberman.set_Y(Sprite.SCALED_SIZE * i);
+                    }
+                }
+            }
             bomberman.set_Img(Sprite.player_right.getFxImage());
             bomberman.setDead(false);
             bomberman.setTime(0);
