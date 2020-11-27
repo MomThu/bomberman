@@ -1,14 +1,10 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.canDeadEntity.enemies;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.getMap.GetMap;
+import uet.oop.bomberman.entities.canDeadEntity.CanDeadEntity;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.List;
 import java.util.Random;
 
 public class Balloom extends CanDeadEntity {

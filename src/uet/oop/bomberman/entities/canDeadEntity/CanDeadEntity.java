@@ -1,6 +1,7 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.canDeadEntity;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.entities.Entity;
 
 public abstract class CanDeadEntity extends Entity {
     protected boolean dead;

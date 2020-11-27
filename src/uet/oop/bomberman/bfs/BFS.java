@@ -25,7 +25,8 @@ public class BFS {
             int X, Y;
             X = point1.x + 1; Y = point1.y;
             if (X <= 30 && BombermanGame.map[Y].charAt(X) != '#'
-                    && BombermanGame.map[Y].charAt(X) != '*') {
+                    && BombermanGame.map[Y].charAt(X) != '*'
+                    && BombermanGame.map[Y].charAt(X) != 'B') {
                 if (visited[X][Y] != true) {
                     visited[X][Y] = true;
                     Point newPoint = new Point(X, Y);
@@ -35,7 +36,8 @@ public class BFS {
             }
             X = point1.x - 1; Y = point1.y;
             if (X >= 0 && BombermanGame.map[Y].charAt(X) != '#'
-                    && BombermanGame.map[Y].charAt(X) != '*') {
+                    && BombermanGame.map[Y].charAt(X) != '*'
+                    && BombermanGame.map[Y].charAt(X) != 'B') {
                 if (visited[X][Y] != true) {
                     visited[X][Y] = true;
                     Point newPoint = new Point(X, Y);
@@ -45,7 +47,8 @@ public class BFS {
             }
             X = point1.x; Y = point1.y + 1;
             if (Y <= 12 && BombermanGame.map[Y].charAt(X) != '#'
-                    && BombermanGame.map[Y].charAt(X) != '*') {
+                    && BombermanGame.map[Y].charAt(X) != '*'
+                    && BombermanGame.map[Y].charAt(X) != 'B') {
                 if (visited[X][Y] != true) {
                     visited[X][Y] = true;
                     Point newPoint = new Point(X, Y);
@@ -55,7 +58,8 @@ public class BFS {
             }
             X = point1.x; Y = point1.y - 1;
             if (Y >= 0 && BombermanGame.map[Y].charAt(X) != '#'
-                    && BombermanGame.map[Y].charAt(X) != '*') {
+                    && BombermanGame.map[Y].charAt(X) != '*'
+                    && BombermanGame.map[Y].charAt(X) != 'B') {
                 if (visited[X][Y] != true) {
                     visited[X][Y] = true;
                     Point newPoint = new Point(X, Y);

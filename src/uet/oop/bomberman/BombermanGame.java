@@ -8,22 +8,29 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.bloom.Bomb;
+import uet.oop.bomberman.entities.bloom.Flame;
+import uet.oop.bomberman.entities.canDeadEntity.*;
+import uet.oop.bomberman.entities.canDeadEntity.enemies.*;
+import uet.oop.bomberman.entities.item.*;
+import uet.oop.bomberman.entities.stillObjects.Grass;
+import uet.oop.bomberman.entities.stillObjects.Portal;
+import uet.oop.bomberman.entities.stillObjects.Wall;
 import uet.oop.bomberman.getMap.GetMap;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.sound.SoundEffects;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class BombermanGame extends Application {
     
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
-    public static String[] map = GetMap.getMap("res/levels/Level2.txt");
+    public static int level = 1;
+    public static int heart = 3;
+    public static String[] map = GetMap.getMap("res/levels/Level"+ level + ".txt");
+
 
     //di chuyen bomber
 
@@ -47,9 +54,9 @@ public class BombermanGame extends Application {
     private List<CanDeadEntity> enemies = new ArrayList<>();
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Application.launch(BombermanGame.class);
-    }
+    }*/
 
     @Override
     public void start(Stage stage) {
@@ -218,6 +225,16 @@ public class BombermanGame extends Application {
                     BombermanGame.map[i] = BombermanGame.map[i].substring(0, j) + "*" +
                             BombermanGame.map[i].substring(j+1, BombermanGame.map[i].length());
                 }
+                else if (map[i].charAt(j) == 'h') {
+                    object = new Grass(j, i, Sprite.grass.getFxImage());
+                    stillObjects.add(object);
+                    object = new Brick(j, i, Sprite.brick.getFxImage());
+                    bricks.add((Brick)object);
+                    object = new DetonatorItem(j, i, Sprite.powerup_detonator.getFxImage());
+                    items.add((DetonatorItem)object);
+                    BombermanGame.map[i] = BombermanGame.map[i].substring(0, j) + "*" +
+                            BombermanGame.map[i].substring(j+1, BombermanGame.map[i].length());
+                }
                 else {
                     object = new Grass(j, i, Sprite.grass.getFxImage());
                     stillObjects.add(object);
@@ -229,21 +246,21 @@ public class BombermanGame extends Application {
 
     public void updateBomb() {
         for (int i = 0; i< bombs.size(); i++) {
-            if (bombs.get(i).getTime() == 120) {
+            if (bombs.get(i).getTime() == 180) {
                 List<Flame> newFlames = bombs.get(i).createFlame(bomberman, bricks);
                 for (Flame flame : newFlames) {
                     flames.add(flame);
                     //flame.killObjects(canDeadObjects);
                 }
             }
-            if (bombs.get(i).getTime() >= 135) {
+            if (bombs.get(i).getTime() >= 195) {
                 bombs.remove(i);
                 i--;
             }
         }
         for (int i = 0; i < flames.size(); i ++) {
             if (flames.get(i).getTime() == 0) {
-                flames.get(i).killObjects(enemies,bricks);
+                flames.get(i).killObjects(enemies,bricks,bombs);
             }
             if (flames.get(i).getTime() >= 15) {
                 flames.remove(i);
@@ -252,9 +269,14 @@ public class BombermanGame extends Application {
         }
         for (int i = 0; i < enemies.size(); i ++) {
             if (enemies.get(i).getTime() == 1) {
-                SoundEffects.play("AAA126_11");
+                SoundEffects.play("AA126_11");
             }
-            if (enemies.get(i).getTime() >= 5) {
+            if (enemies.get(i).getTime() >= 20) {
+                if (enemies.get(i) instanceof RedCoin) {
+                    OrangeCoin orangeCoin = new OrangeCoin(enemies.get(i).get_x() / 32,
+                            enemies.get(i).get_y() / 32, Sprite.orangecoin_left1.getFxImage());
+                    enemies.add(orangeCoin);
+                }
                 enemies.remove(i);
                 i--;
             }
@@ -271,7 +293,49 @@ public class BombermanGame extends Application {
                 i--;
             }
         }
-        bomberman.collideToDead(flames, enemies);
+        for (int i = 0; i < portals.size(); i++) {
+            if (portals.get(i).goToNewLevel(bomberman) == 1 && enemies.size() == 0) {
+                clear();
+                ++level;
+                map = GetMap.getMap("res/levels/Level"+ level + ".txt");
+                loadMap();
+            }
+        }
+        if (bomberman.isDead() && heart >= 1 && bomberman.getTime() == 20) {
+            for (int i = 0; i < map.length; i++) {
+                for  (int j = 0; j < map[i].length(); j++) {
+                    if (map[i].charAt(j) == 'p') {
+                        bomberman.set_X(Sprite.SCALED_SIZE * j);
+                        bomberman.set_Y(Sprite.SCALED_SIZE * i);
+                    }
+                }
+            }
+            bomberman.set_Img(Sprite.player_right.getFxImage());
+            bomberman.setDead(false);
+            heart--;
+        }
+        if (!bomberman.isDead()) {
+            if (bomberman.getTime() >= 20) {
+                bomberman.setTime(bomberman.getTime() + 1);
+            }
+            if (bomberman.getTime() == 200 && heart >= 0) {
+                bomberman.setTime(0);
+            }
+            if (bomberman.getTime() == 0) {
+                bomberman.collideToDead(flames, enemies, bombs);
+            }
+        }
+    }
+
+    public void clear() {
+        entities.clear();
+        stillObjects.clear();
+        bombs.clear();
+        flames.clear();
+        bricks.clear();
+        portals.clear();
+        items.clear();
+        enemies.clear();
     }
 
     public void update() {
