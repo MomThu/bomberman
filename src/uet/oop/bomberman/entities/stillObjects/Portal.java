@@ -1,7 +1,9 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.stillObjects;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.Bomber;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.getMap.GetMap;
 
 public class Portal extends Entity {
@@ -12,11 +14,10 @@ public class Portal extends Entity {
     public int goToNewLevel(Bomber bomber) {
         int X = (x + 16) / 32;
         int Y = (y + 16) / 32;
-        int X1 = (bomber.x + 12) / 32;
-        int Y1 = (bomber.y + 16) / 32;
+        int X1 = (bomber.get_x() + 12) / 32;
+        int Y1 = (bomber.get_y() + 16) / 32;
         if (X1 == X && Y1 == Y && BombermanGame.level <= 5) {
-            BombermanGame.level++;
-            return BombermanGame.level;
+            return 1;
         }
         return 0;
     }

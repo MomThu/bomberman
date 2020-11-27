@@ -1,30 +1,31 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.item;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.Bomber;
+import uet.oop.bomberman.entities.item.Item;
 import uet.oop.bomberman.sound.SoundEffects;
 
-public class BombItem extends Item {
-    public BombItem (int x, int y, Image img) {
+public class SpeedItem extends Item {
+    public SpeedItem (int x, int y, Image img) {
         super(x, y, img);
     }
 
     public void collectItem(Bomber bomber) {
         int X = x / 32;
         int Y = y / 32;
-        int X1 = (bomber.x + 2) / 32;
-        int X2 = (bomber.x + 22) / 32;
-        int Y1 = (bomber.y + 2) / 32;
-        int Y2 = (bomber.y + 30) / 32;
+        int X1 = (bomber.get_x() + 2) / 32;
+        int X2 = (bomber.get_x() + 22) / 32;
+        int Y1 = (bomber.get_y() + 2) / 32;
+        int Y2 = (bomber.get_y() + 30) / 32;
         if ((X1 == X && Y1 == Y)
                 || (X1 == X && Y2 == Y)
                 || (X2 == X && Y1 == Y)
                 || (X2 == X && Y2 == Y)) {
             this.setDead(true);
             this.setTime(0);
-            if (bomber.getNumOfBomb() < 5) {
-                bomber.setNumOfBomb(bomber.getNumOfBomb() + 1);
-            }
+            bomber.setSpeedX(bomber.getSpeedX() + 1);
+            bomber.setSpeedY(bomber.getSpeedY() + 1);
         }
     }
 

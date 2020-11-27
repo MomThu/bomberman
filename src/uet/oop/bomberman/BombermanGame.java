@@ -8,24 +8,29 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.bloom.Bomb;
+import uet.oop.bomberman.entities.bloom.Flame;
+import uet.oop.bomberman.entities.canDeadEntity.*;
+import uet.oop.bomberman.entities.canDeadEntity.enemies.*;
+import uet.oop.bomberman.entities.item.*;
+import uet.oop.bomberman.entities.stillObjects.Grass;
+import uet.oop.bomberman.entities.stillObjects.Portal;
+import uet.oop.bomberman.entities.stillObjects.Wall;
 import uet.oop.bomberman.getMap.GetMap;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.sound.SoundEffects;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class BombermanGame extends Application {
     
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
-    public static int level = 2;
+    public static int level = 1;
     public static int heart = 3;
-    public static String[] map = GetMap.getMap("res/levels/Level2.txt");
+    public static String[] map = GetMap.getMap("res/levels/Level"+ level + ".txt");
+
 
     //di chuyen bomber
 
@@ -289,13 +294,14 @@ public class BombermanGame extends Application {
             }
         }
         for (int i = 0; i < portals.size(); i++) {
-            if (portals.get(i).goToNewLevel(bomberman) == level && enemies.size() == 0) {
+            if (portals.get(i).goToNewLevel(bomberman) == 1 && enemies.size() == 0) {
                 clear();
+                ++level;
                 map = GetMap.getMap("res/levels/Level"+ level + ".txt");
                 loadMap();
             }
         }
-        if (bomberman.isDead() && heart >= 1 && bomberman.getTime() > 20) {
+        if (bomberman.isDead() && heart >= 1 && bomberman.getTime() == 20) {
             for (int i = 0; i < map.length; i++) {
                 for  (int j = 0; j < map[i].length(); j++) {
                     if (map[i].charAt(j) == 'p') {
@@ -306,10 +312,19 @@ public class BombermanGame extends Application {
             }
             bomberman.set_Img(Sprite.player_right.getFxImage());
             bomberman.setDead(false);
-            bomberman.setTime(0);
             heart--;
         }
-        bomberman.collideToDead(flames, enemies);
+        if (!bomberman.isDead()) {
+            if (bomberman.getTime() >= 20) {
+                bomberman.setTime(bomberman.getTime() + 1);
+            }
+            if (bomberman.getTime() == 200 && heart >= 0) {
+                bomberman.setTime(0);
+            }
+            if (bomberman.getTime() == 0) {
+                bomberman.collideToDead(flames, enemies, bombs);
+            }
+        }
     }
 
     public void clear() {

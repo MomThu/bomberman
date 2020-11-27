@@ -2,6 +2,9 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.bloom.Bomb;
+import uet.oop.bomberman.entities.bloom.Flame;
+import uet.oop.bomberman.entities.canDeadEntity.CanDeadEntity;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.sound.SoundEffects;
 
@@ -338,7 +341,7 @@ public class Bomber extends Entity {
         }
     }
 
-    public void collideToDead(List<Flame> flames, List<CanDeadEntity> enemies) {
+    public void collideToDead(List<Flame> flames, List<CanDeadEntity> enemies, List<Bomb> bombs) {
         int X1 = (x + 3) / 32;
         int Y1 = (y + 3) / 32;
         int X2 = (x + 21) / 32;
@@ -356,6 +359,12 @@ public class Bomber extends Entity {
                     || (entity.get_x() / 32 == X1 && entity.get_y() / 32 == Y2)
                     || (entity.get_x() / 32 == X2 && entity.get_y() / 32 == Y1)
                     || (entity.get_x() / 32 == X2 && entity.get_y() / 32 == Y2)) {
+                setDead(true);
+                setTime(0);
+            }
+        }
+        for (Bomb bomb: bombs) {
+            if (bomb.get_x() / 32 == X3 && bomb.get_y() / 32 == Y3 && bomb.getTime() >= 180) {
                 setDead(true);
                 setTime(0);
             }

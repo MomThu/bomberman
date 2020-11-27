@@ -1,10 +1,11 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.canDeadEntity;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.canDeadEntity.CanDeadEntity;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class Brick extends CanDeadEntity{
+public class Brick extends CanDeadEntity {
 
     public Brick (int x, int y, Image img) {
         super(x, y, img);

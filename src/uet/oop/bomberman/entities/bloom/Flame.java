@@ -1,11 +1,15 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.bloom;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.bloom.Bomb;
+import uet.oop.bomberman.entities.canDeadEntity.Brick;
+import uet.oop.bomberman.entities.canDeadEntity.CanDeadEntity;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.List;
 
-public class Flame extends Entity{
+public class Flame extends Entity {
 
     private String typeExplosion;
 
@@ -44,10 +48,10 @@ public class Flame extends Entity{
         int X = x / 32;
         int Y = y / 32;
         for (CanDeadEntity entity: enemies) {
-            int X1 = (entity.x + 2) / 32;
-            int X2 = (entity.x + 30) / 32;
-            int Y1 = (entity.y + 2) / 32;
-            int Y2 = (entity.y + 30) / 32;
+            int X1 = (entity.get_x() + 2) / 32;
+            int X2 = (entity.get_x() + 30) / 32;
+            int Y1 = (entity.get_y() + 2) / 32;
+            int Y2 = (entity.get_y() + 30) / 32;
             if ((X1 == X && Y1 == Y)
                     || (X1 == X && Y2 == Y)
                     || (X2 == X && Y1 == Y)
@@ -57,16 +61,16 @@ public class Flame extends Entity{
             }
         }
         for (Brick brick: bricks) {
-            int X1 = brick.x / 32;
-            int Y1 = brick.y / 32;
+            int X1 = brick.get_x() / 32;
+            int Y1 = brick.get_y() / 32;
             if (X1 == X && Y1 == Y) {
                 brick.setDead(true);
                 brick.setTime(0);
             }
         }
         for (Bomb bomb: bombs) {
-            int X1 = bomb.x / 32;
-            int Y1 = bomb.y / 32;
+            int X1 = bomb.get_x() / 32;
+            int Y1 = bomb.get_y() / 32;
             if ((X1 == X && Y1 == Y) && bomb.getTime() < 179) {
                 bomb.setTime(179);
             }

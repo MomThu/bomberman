@@ -1,16 +1,12 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.canDeadEntity.enemies;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.bfs.BFS;
 import uet.oop.bomberman.bfs.Point;
-import uet.oop.bomberman.getMap.GetMap;
+import uet.oop.bomberman.entities.canDeadEntity.CanDeadEntity;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.List;
 import java.util.Random;
 
 public class Oneal extends CanDeadEntity {
@@ -183,7 +179,11 @@ public class Oneal extends CanDeadEntity {
         Point point2 = new Point(x/32, y/32);
         Point point1 = new Point(BombermanGame.bomberman.getX(), BombermanGame.bomberman.getY());
         if (x%32 == 0 && y%32 == 0) {
-            direction = bfs.resultPath(point1, point2).charAt(0);
+            if (BombermanGame.bomberman.getTime() == 0) {
+                direction = bfs.resultPath(point1, point2).charAt(0);
+            } else {
+                direction = ' ';
+            }
         }
         if (Math.abs(x/32 - BombermanGame.bomberman.getX()) < 5
                 && Math.abs(y/32 - BombermanGame.bomberman.getY()) < 5 && x % 2 == 0 && y % 2 == 0) {
