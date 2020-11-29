@@ -16,7 +16,7 @@ public class Kondoria extends CanDeadEntity {
     public int ok = 0, ok1 = 0, ok2 = 0;
 
     public void browse_row() {
-        if (x >=0 && x <= 30*32) {
+        if (x >=0 && x <= (BombermanGame.WIDTH - 1)*32) {
             if (BombermanGame.map[y/32].charAt(x/32 + 1) != '#'
                     && BombermanGame.map[y/32].charAt(x/32 + 1) != 'B' && ok == 0) {
                 x++;
@@ -79,7 +79,7 @@ public class Kondoria extends CanDeadEntity {
     }
 
     public void browse_column() {
-        if (y >=0 && y <= 12*32) {
+        if (y >=0 && y <= (BombermanGame.HEIGHT - 1)*32) {
             if (BombermanGame.map[y/32+1].charAt(x/32) != '#'
                     && BombermanGame.map[y/32+1].charAt(x/32) != 'B' && ok1 == 0) {
                 y++;

@@ -25,9 +25,9 @@ import java.util.List;
 
 public class BombermanGame extends Application {
     
-    public static final int WIDTH = 31;
-    public static final int HEIGHT = 13;
-    public static int level = 1;
+    public static int WIDTH = 31;
+    public static int HEIGHT = 13;
+    public static int level = 5;
     public static int heart = 3;
     public static String[] map = GetMap.getMap("res/levels/Level"+ level + ".txt");
 
@@ -52,10 +52,10 @@ public class BombermanGame extends Application {
     //brick+enemies
     //private List<CanDeadEntity> canDeadObjects = new ArrayList<>();
     private List<CanDeadEntity> enemies = new ArrayList<>();
-
+    Stage newStage;
 
     /*public static void main(String[] args) {
-        Application.launch(BombermanGame.class);
+        Application.launch(uet.oop.bomberman.BombermanGame.class);
     }*/
 
     @Override
@@ -297,11 +297,15 @@ public class BombermanGame extends Application {
             if (portals.get(i).goToNewLevel(bomberman) == 1 && enemies.size() == 0) {
                 clear();
                 ++level;
-                map = GetMap.getMap("res/levels/Level"+ level + ".txt");
+                if (level <= 5) {
+                    map = GetMap.getMap("res/levels/Level"+ level + ".txt");
+                } else {
+                    map = GetMap.getMap("res/levels/Win.txt");
+                }
                 loadMap();
             }
         }
-        if (bomberman.isDead() && heart >= 1 && bomberman.getTime() == 20) {
+        if (bomberman.isDead() && heart >= 2 && bomberman.getTime() == 20) {
             for (int i = 0; i < map.length; i++) {
                 for  (int j = 0; j < map[i].length(); j++) {
                     if (map[i].charAt(j) == 'p') {
@@ -313,6 +317,10 @@ public class BombermanGame extends Application {
             bomberman.set_Img(Sprite.player_right.getFxImage());
             bomberman.setDead(false);
             heart--;
+        } else if (bomberman.isDead() && heart == 1 && bomberman.getTime() >= 20) {
+            clear();
+            map = GetMap.getMap("res/levels/Lose.txt");
+            loadMap();
         }
         if (!bomberman.isDead()) {
             if (bomberman.getTime() >= 20) {

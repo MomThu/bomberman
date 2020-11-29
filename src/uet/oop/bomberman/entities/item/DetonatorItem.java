@@ -3,7 +3,6 @@ package uet.oop.bomberman.entities.item;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Bomber;
-import uet.oop.bomberman.entities.item.Item;
 import uet.oop.bomberman.sound.SoundEffects;
 
 public class DetonatorItem extends Item {

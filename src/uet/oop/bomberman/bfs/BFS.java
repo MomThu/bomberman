@@ -2,16 +2,14 @@ package uet.oop.bomberman.bfs;
 
 import uet.oop.bomberman.BombermanGame;
 
-import javax.swing.plaf.IconUIResource;
 import java.util.LinkedList;
-import java.util.Queue;
 
 public class BFS {
-    boolean[][] visited = new boolean[31][13];
-    String[][] path = new String[31][13];
+    boolean[][] visited = new boolean[BombermanGame.WIDTH][BombermanGame.HEIGHT];
+    String[][] path = new String[BombermanGame.WIDTH][BombermanGame.HEIGHT];
     public void bfs (Point point) {
-        for (int i = 0; i < 31; i++) {
-            for (int j = 0; j < 13; j++) {
+        for (int i = 0; i < BombermanGame.WIDTH; i++) {
+            for (int j = 0; j < BombermanGame.HEIGHT; j++) {
                 visited[i][j] = false;
                 Point p = new Point(i, j);
                 path[i][j] = "";
@@ -24,7 +22,7 @@ public class BFS {
             Point point1 = linkedList.pollFirst();
             int X, Y;
             X = point1.x + 1; Y = point1.y;
-            if (X <= 30 && BombermanGame.map[Y].charAt(X) != '#'
+            if (X <= BombermanGame.WIDTH - 1 && BombermanGame.map[Y].charAt(X) != '#'
                     && BombermanGame.map[Y].charAt(X) != '*'
                     && BombermanGame.map[Y].charAt(X) != 'B') {
                 if (visited[X][Y] != true) {
@@ -46,7 +44,7 @@ public class BFS {
                 }
             }
             X = point1.x; Y = point1.y + 1;
-            if (Y <= 12 && BombermanGame.map[Y].charAt(X) != '#'
+            if (Y <= BombermanGame.HEIGHT - 1 && BombermanGame.map[Y].charAt(X) != '#'
                     && BombermanGame.map[Y].charAt(X) != '*'
                     && BombermanGame.map[Y].charAt(X) != 'B') {
                 if (visited[X][Y] != true) {

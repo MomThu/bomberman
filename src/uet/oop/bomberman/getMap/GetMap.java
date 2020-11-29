@@ -1,5 +1,7 @@
 package uet.oop.bomberman.getMap;
 
+import uet.oop.bomberman.BombermanGame;
+
 import java.io.File;
 import java.util.Scanner;
 
@@ -10,11 +12,14 @@ public class GetMap {
             int level = scanner.nextInt();
             int height = scanner.nextInt();
             int width = scanner.nextInt();
+            BombermanGame.HEIGHT = height;
+            BombermanGame.WIDTH = width;
             String[] maps = new String[height];
             maps[0] = scanner.nextLine();
             for(int i = 0; i < height; ++i) {
                 maps[i] = scanner.nextLine();
             }
+
             return maps;
         } catch (Exception e) {
             System.out.println(e.getMessage());
