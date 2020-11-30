@@ -30,6 +30,7 @@ public class BombermanGame extends Application {
     public static int level = 5;
     public static int heart = 3;
     public static String[] map = GetMap.getMap("res/levels/Level"+ level + ".txt");
+    public static int musicTime = 0;
 
 
     //di chuyen bomber
@@ -54,9 +55,9 @@ public class BombermanGame extends Application {
     private List<CanDeadEntity> enemies = new ArrayList<>();
     Stage newStage;
 
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
         Application.launch(uet.oop.bomberman.BombermanGame.class);
-    }*/
+    }
 
     @Override
     public void start(Stage stage) {
@@ -70,7 +71,7 @@ public class BombermanGame extends Application {
 
         // Tao scene
         Scene scene = new Scene(root);
-
+        stage.setTitle("Bomberman - Level " + level);
         // Them scene vao stage
         stage.setScene(scene);
         stage.show();
@@ -111,6 +112,12 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                ++musicTime;
+                if (musicTime == 12000) {
+                    SoundEffects.play("soundtrack");
+                    musicTime = 0;
+                }
+                stage.setTitle("Bomberman - Level " + level);
                 render();
                 update();
             }
@@ -124,7 +131,7 @@ public class BombermanGame extends Application {
         //createMap();
         loadMap();
 
-        bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+
     }
 
     public void createMap() {
@@ -297,6 +304,7 @@ public class BombermanGame extends Application {
             if (portals.get(i).goToNewLevel(bomberman) == 1 && enemies.size() == 0) {
                 clear();
                 ++level;
+                heart = 3;
                 if (level <= 5) {
                     map = GetMap.getMap("res/levels/Level"+ level + ".txt");
                 } else {

@@ -13,10 +13,10 @@ public class SpeedItem extends Item {
     public void collectItem(Bomber bomber) {
         int X = x / 32;
         int Y = y / 32;
-        int X1 = (bomber.get_x() + 2) / 32;
-        int X2 = (bomber.get_x() + 22) / 32;
-        int Y1 = (bomber.get_y() + 2) / 32;
-        int Y2 = (bomber.get_y() + 30) / 32;
+        int X1 = (bomber.get_x() + 4) / 32;
+        int X2 = (bomber.get_x() + 20) / 32;
+        int Y1 = (bomber.get_y() + 4) / 32;
+        int Y2 = (bomber.get_y() + 28) / 32;
         if ((X1 == X && Y1 == Y)
                 || (X1 == X && Y2 == Y)
                 || (X2 == X && Y1 == Y)
